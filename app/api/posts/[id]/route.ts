@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createRouteClient } from '@/lib/supabase/server'
 import { slugify } from '@/lib/utils'
 
 type RouteContext = {
@@ -12,7 +12,7 @@ export async function GET(
 ) {
 	try {
 		const { id } = await context.params
-		const supabase = createClient()
+		const supabase = createRouteClient(request)
 
 		// Check if user is authenticated
 		const { data: { session }, error: authError } = await supabase.auth.getSession()
@@ -41,7 +41,7 @@ export async function PUT(
 ) {
 	try {
 		const { id } = await context.params
-		const supabase = createClient()
+		const supabase = createRouteClient(request)
 
 		// Check if user is authenticated
 		const { data: { session }, error: authError } = await supabase.auth.getSession()
@@ -84,7 +84,7 @@ export async function DELETE(
 ) {
 	try {
 		const { id } = await context.params
-		const supabase = createClient()
+		const supabase = createRouteClient(request)
 
 		// Check if user is authenticated
 		const { data: { session }, error: authError } = await supabase.auth.getSession()

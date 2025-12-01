@@ -1,6 +1,7 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
+import type { NextRequest } from 'next/server'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -35,5 +36,20 @@ export const createPublicClient = () =>
   createSupabaseClient(supabaseUrl, supabaseAnonKey, {
     auth: {
       persistSession: false,
+    },
+  })
+
+export const createRouteClient = (request: NextRequest) =>
+  createServerClient(supabaseUrl, supabaseAnonKey, {
+    cookies: {
+      get(name: string) {
+        return request.cookies.get(name)?.value
+      },
+      set() {
+        // No-op; route handlers can't mutate request cookies directly
+      },
+      remove() {
+        // No-op
+      },
     },
   })

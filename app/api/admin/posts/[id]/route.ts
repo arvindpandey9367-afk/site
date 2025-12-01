@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createRouteClient } from '@/lib/supabase/server'
 import { slugify } from '@/lib/utils'
 
 type RouteContext = {
@@ -12,7 +12,7 @@ export async function GET(
 ) {
 	try {
 		const { id } = await context.params
-		const supabase = createClient()
+		const supabase = createRouteClient(request)
 		const { data: post, error } = await supabase
 			.from('posts')
 			.select('*')
@@ -48,7 +48,7 @@ export async function PUT(
 ) {
 	try {
 		const { id } = await context.params
-		const supabase = createClient()
+		const supabase = createRouteClient(request)
 		const body = await request.json()
 		const { title, slug, content, excerpt, published } = body
 
@@ -101,7 +101,7 @@ export async function DELETE(
 ) {
 	try {
 		const { id } = await context.params
-		const supabase = createClient()
+		const supabase = createRouteClient(request)
 		const { error } = await supabase
 			.from('posts')
 			.delete()

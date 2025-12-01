@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createPublicClient } from '@/lib/supabase/server'
 
 type RouteContext = {
 	params: Promise<{ slug: string }>
@@ -8,7 +8,7 @@ type RouteContext = {
 export async function GET(_request: NextRequest, context: RouteContext) {
 	try {
 		const { slug } = await context.params
-		const supabase = createClient()
+		const supabase = createPublicClient()
 		const { data: post, error } = await supabase
 			.from('posts')
 			.select('*')

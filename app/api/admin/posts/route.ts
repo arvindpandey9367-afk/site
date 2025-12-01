@@ -1,24 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createRouteClient } from '@/lib/supabase/server'
 import { slugify } from '@/lib/utils'
 
 export async function GET(request: NextRequest) {
 	try {
-		// Get session from cookies
-		const authHeader = request.headers.get('Authorization')
-
-		if (!authHeader) {
-			// Try to get session from cookie
-			const sessionCookie = request.cookies.get('sb-access-token')
-
-			if (!sessionCookie) {
-				return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-			}
-		}
-
-		// For now, let's skip auth check for development
-		// In production, you should verify the session properly
-		const supabase = createClient()
+		const supabase = createRouteClient(request)
 		const { data: posts, error } = await supabase
 			.from('posts')
 			.select('*')
@@ -41,7 +27,7 @@ export async function POST(request: NextRequest) {
 		// For development, skip auth check
 		// In production, add proper authentication
 
-		const supabase = createClient()
+		const supabase = createRouteClient(request)
 		const body = await request.json()
 		const { title, slug, content, excerpt, published } = body
 
