@@ -1,0 +1,300 @@
+import { notFound } from 'next/navigation'
+import Link from 'next/link'
+import { format } from 'date-fns'
+import { Calendar, Clock, User, ArrowLeft, Share2, BookOpen, Tag, Eye } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { MarkdownRenderer } from '@/components/markdown-renderer'
+import { Post } from '@/types/post'
+
+// Server component to fetch post by slug
+async function getPostBySlug(slug: string): Promise<Post | null> {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/posts/slug/${slug}`,
+      { cache: 'no-store' }
+    )
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        return null
+      }
+      console.error('Failed to fetch post:', response.status)
+      return null
+    }
+
+    return await response.json()
+  } catch (error) {
+    console.error('Error fetching post:', error)
+    return null
+  }
+}
+
+// Fetch related posts
+async function getRelatedPosts(currentSlug: string): Promise<Post[]> {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/posts`,
+      { cache: 'no-store' }
+    )
+
+    if (!response.ok) {
+      return []
+    }
+
+    const posts: Post[] = await response.json()
+    // Filter out current post and get first 3 related posts
+    return posts
+      .filter(post => post.slug !== currentSlug && post.published)
+      .slice(0, 3)
+  } catch (error) {
+    console.error('Error fetching related posts:', error)
+    return []
+  }
+}
+
+function getReadingTime(content: string): number {
+  const wordsPerMinute = 200
+  const words = content.trim().split(/\s+/).length
+  return Math.ceil(words / wordsPerMinute)
+}
+
+function generateEstimatedReadTime(content: string): string {
+  const minutes = getReadingTime(content)
+  if (minutes < 1) return 'Less than 1 min'
+  return `${minutes} min read`
+}
+
+interface PageProps {
+  params: {
+    slug: string
+  }
+}
+
+export default async function BlogPostPage({ params }: PageProps) {
+  const post = await getPostBySlug(params.slug)
+  const relatedPosts = await getRelatedPosts(params.slug)
+
+  if (!post || !post.published) {
+    notFound()
+  }
+
+  const readingTime = getReadingTime(post.content)
+  const publishedDate = new Date(post.published_at || post.created_at)
+  const formattedDate = format(publishedDate, 'MMMM d, yyyy')
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-background to-muted/10">
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        {/* Navigation */}
+        <div className="mb-8">
+          <Button variant="ghost" asChild>
+            <Link href="/blog">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Blog
+            </Link>
+          </Button>
+        </div>
+
+        {/* Article Header */}
+        <header className="mb-12">
+          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold mb-6">
+            <BookOpen className="h-4 w-4" />
+            Article
+          </div>
+
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+            {post.title}
+          </h1>
+
+          <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
+            {post.excerpt}
+          </p>
+
+          {/* Meta Information */}
+          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-8">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-purple-600 flex items-center justify-center text-white font-bold">
+                JD
+              </div>
+              <span>John Doe</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
+              <time dateTime={publishedDate.toISOString()}>{formattedDate}</time>
+            </div>
+            <div className="flex items-center gap-2">
+              <Clock className="h-4 w-4" />
+              <span>{generateEstimatedReadTime(post.content)}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Eye className="h-4 w-4" />
+              <span>{Math.floor(readingTime * 100)} views</span>
+            </div>
+          </div>
+
+          {/* Tags */}
+          <div className="flex flex-wrap gap-2 mb-8">
+            <span className="flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">
+              <Tag className="h-3 w-3" />
+              Web Development
+            </span>
+            <span className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">
+              Next.js
+            </span>
+            <span className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">
+              TypeScript
+            </span>
+            <span className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">
+              Tutorial
+            </span>
+          </div>
+
+          {/* Featured Image Placeholder */}
+          <div className="relative h-64 md:h-80 rounded-xl overflow-hidden mb-8 bg-gradient-to-r from-primary/20 to-purple-600/20">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center">
+                <div className="text-6xl mb-4">📝</div>
+                <p className="text-muted-foreground">Featured Image</p>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Article Content with Markdown */}
+        <article className="mb-16">
+          <div className="prose prose-lg dark:prose-invert max-w-none">
+            <MarkdownRenderer content={post.content} />
+          </div>
+        </article>
+
+        {/* Share Section */}
+        <Card className="p-6 mb-12 bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+              <h3 className="font-semibold text-lg mb-1">Enjoyed this article?</h3>
+              <p className="text-muted-foreground">Share it with others!</p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <Button variant="outline" size="sm" className="gap-2">
+                <Share2 className="h-4 w-4" />
+                Share
+              </Button>
+              <Button variant="outline" size="sm" className="gap-2">
+                <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.213c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+                </svg>
+                Twitter
+              </Button>
+              <Button variant="outline" size="sm" className="gap-2">
+                <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                </svg>
+                LinkedIn
+              </Button>
+              <Button variant="outline" size="sm" className="gap-2">
+                Copy Link
+              </Button>
+            </div>
+          </div>
+        </Card>
+
+        {/* Author Bio */}
+        <Card className="p-8 mb-12">
+          <div className="flex flex-col md:flex-row items-start gap-6">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-r from-primary to-purple-600 flex items-center justify-center text-white font-bold text-2xl">
+              JD
+            </div>
+            <div>
+              <h3 className="font-bold text-xl mb-3">John Doe</h3>
+              <p className="text-muted-foreground mb-4 leading-relaxed">
+                Full-stack developer passionate about creating beautiful, functional web applications.
+                With over 5 years of experience in modern web technologies, I love sharing knowledge
+                through writing and helping others learn.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <Button variant="ghost" size="sm" asChild>
+                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+                    Twitter
+                  </a>
+                </Button>
+                <Button variant="ghost" size="sm" asChild>
+                  <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                    GitHub
+                  </a>
+                </Button>
+                <Button variant="ghost" size="sm" asChild>
+                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+                    LinkedIn
+                  </a>
+                </Button>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link href="/">
+                    Portfolio
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        {/* Related Articles */}
+        {relatedPosts.length > 0 && (
+          <div className="mb-12">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold">Related Articles</h2>
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="/blog">View all</Link>
+              </Button>
+            </div>
+            <div className="grid md:grid-cols-3 gap-6">
+              {relatedPosts.map((relatedPost) => (
+                <Card
+                  key={relatedPost.id}
+                  className="group hover:shadow-lg transition-all duration-300 hover:border-primary/30 overflow-hidden"
+                >
+                  <div className="p-5">
+                    <div className="text-xs text-muted-foreground mb-3">
+                      {format(new Date(relatedPost.published_at || relatedPost.created_at), 'MMM d, yyyy')}
+                    </div>
+                    <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                      <Link href={`/blog/${relatedPost.slug}`}>
+                        {relatedPost.title}
+                      </Link>
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                      {relatedPost.excerpt}
+                    </p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-muted-foreground">
+                        {getReadingTime(relatedPost.content)} min read
+                      </span>
+                      <Button variant="ghost" size="sm" asChild className="text-primary">
+                        <Link href={`/blog/${relatedPost.slug}`}>Read →</Link>
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Navigation Between Posts */}
+        <div className="flex flex-col md:flex-row gap-4 justify-between">
+          <Button variant="outline" asChild className="flex-1 justify-start">
+            <Link href="/blog">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              All Articles
+            </Link>
+          </Button>
+          <Button variant="outline" asChild className="flex-1 justify-center">
+            <Link href="/">
+              Back to Portfolio
+            </Link>
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+}

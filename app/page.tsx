@@ -1,65 +1,182 @@
-import Image from "next/image";
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Home, User, Mail, Github, Linkedin, BookOpen, ArrowRight } from 'lucide-react'
 
-export default function Home() {
+export default function HomePage() {
+  const projects = [
+    {
+      title: "E-commerce Platform",
+      description: "Full-stack e-commerce solution with React & Node.js",
+      tech: ["React", "Node.js", "MongoDB"]
+    },
+    {
+      title: "Task Management App",
+      description: "Productivity app with real-time collaboration",
+      tech: ["Next.js", "Socket.io", "PostgreSQL"]
+    },
+    {
+      title: "AI Chat Assistant",
+      description: "Intelligent chatbot using OpenAI API",
+      tech: ["Python", "FastAPI", "React"]
+    }
+  ]
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <section className="py-20 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center">
+            <div className="inline-block p-4 bg-primary/10 rounded-full mb-6">
+              <User className="h-12 w-12 text-primary" />
+            </div>
+            <h1 className="text-5xl font-bold mb-4">John Doe</h1>
+            <p className="text-xl text-muted-foreground mb-8">
+              Full Stack Developer & UI/UX Designer
+            </p>
+            <div className="flex justify-center gap-4">
+              <Button asChild>
+                <Link href="/blog">View Blog</Link>
+              </Button>
+              <Button variant="outline" asChild>
+                <Link href="#contact">Contact Me</Link>
+              </Button>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Projects Section */}
+      <section className="py-16 bg-muted/50">
+        <div className="max-w-6xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12">Featured Projects</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            {projects.map((project, index) => (
+              <Card key={index}>
+                <CardHeader>
+                  <CardTitle>{project.title}</CardTitle>
+                  <CardDescription>{project.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tech.map((tech, i) => (
+                      <span key={i} className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
-      </main>
+      </section>
+
+      {/* Blog Preview Section */}
+      <section className="py-16 px-4 bg-gradient-to-b from-background to-muted/20">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Latest Blog Posts</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Read my latest thoughts on web development, design, and technology.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* This would be dynamic from your API */}
+            <Card className="group hover:shadow-xl transition-all duration-300">
+              <CardHeader>
+                <CardTitle className="group-hover:text-primary transition-colors">
+                  <Link href="/blog/getting-started-with-nextjs">
+                    Getting Started with Next.js 14
+                  </Link>
+                </CardTitle>
+                <CardDescription>
+                  Learn about the new features and improvements in Next.js 14
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                  <span>Jan 15, 2024</span>
+                  <span>5 min read</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="group hover:shadow-xl transition-all duration-300">
+              <CardHeader>
+                <CardTitle className="group-hover:text-primary transition-colors">
+                  <Link href="/blog/typescript-best-practices">
+                    TypeScript Best Practices
+                  </Link>
+                </CardTitle>
+                <CardDescription>
+                  Improve your TypeScript code with these patterns and practices
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                  <span>Jan 10, 2024</span>
+                  <span>8 min read</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="group hover:shadow-xl transition-all duration-300">
+              <CardHeader>
+                <CardTitle className="group-hover:text-primary transition-colors">
+                  <Link href="/blog/tailwind-css-tips">
+                    Tailwind CSS Tips & Tricks
+                  </Link>
+                </CardTitle>
+                <CardDescription>
+                  Advanced techniques for working with Tailwind CSS
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                  <span>Jan 5, 2024</span>
+                  <span>6 min read</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="text-center mt-12">
+            <Button asChild size="lg">
+              <Link href="/blog">
+                View All Posts
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-16 bg-muted/50">
+        <div className="max-w-6xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-8">Get In Touch</h2>
+          <div className="flex justify-center gap-6">
+            <Button variant="outline" size="icon" asChild>
+              <a href="mailto:hello@example.com">
+                <Mail className="h-5 w-5" />
+              </a>
+            </Button>
+            <Button variant="outline" size="icon" asChild>
+              <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                <Github className="h-5 w-5" />
+              </a>
+            </Button>
+            <Button variant="outline" size="icon" asChild>
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+                <Linkedin className="h-5 w-5" />
+              </a>
+            </Button>
+          </div>
+        </div>
+      </section>
     </div>
-  );
+  )
 }

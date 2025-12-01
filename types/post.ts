@@ -1,0 +1,19 @@
+export interface Post {
+  id: string
+  title: string
+  slug: string
+  content: string
+  excerpt: string
+  published: boolean
+  created_at: string
+  updated_at: string
+  published_at: string | null
+}
+
+export interface PostSummary {
+  id: string
+  title: string
+  slug: string
+  excerpt: string
+  published_at: string | null
+}
