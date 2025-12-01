@@ -1,29 +1,36 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { format } from 'date-fns'
-import { Calendar, Clock, User, ArrowLeft, Share2, BookOpen, Tag, Eye } from 'lucide-react'
+import { Calendar, Clock, ArrowLeft, Share2, BookOpen, Tag, Eye } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { MarkdownRenderer } from '@/components/markdown-renderer'
 import { Post } from '@/types/post'
+import { createPublicClient } from '@/lib/supabase/server'
+
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 // Server component to fetch post by slug
 export async function getPostBySlug(slug: string): Promise<Post | null> {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/posts/slug/${slug}`,
-      { cache: 'no-store' }
-    )
+    const supabase = createPublicClient()
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*')
+      .eq('slug', slug)
+      .eq('published', true)
+      .single()
 
-    if (!response.ok) {
-      if (response.status === 404) {
+    if (error) {
+      if (error.code === 'PGRST116') {
         return null
       }
-      console.error('Failed to fetch post:', response.status)
+      console.error('Failed to fetch post:', error)
       return null
     }
 
-    return await response.json()
+    return data as Post
   } catch (error) {
     console.error('Error fetching post:', error)
     return null
@@ -33,20 +40,22 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 // Fetch related posts
 async function getRelatedPosts(currentSlug: string): Promise<Post[]> {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/posts`,
-      { cache: 'no-store' }
-    )
+    const supabase = createPublicClient()
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*')
+      .eq('published', true)
+      .neq('slug', currentSlug)
+      .order('published_at', { ascending: false })
+      .order('created_at', { ascending: false })
+      .limit(3)
 
-    if (!response.ok) {
+    if (error) {
+      console.error('Failed to fetch related posts:', error)
       return []
     }
 
-    const posts: Post[] = await response.json()
-    // Filter out current post and get first 3 related posts
-    return posts
-      .filter(post => post.slug !== currentSlug && post.published)
-      .slice(0, 3)
+    return (data as Post[]) || []
   } catch (error) {
     console.error('Error fetching related posts:', error)
     return []
@@ -66,14 +75,15 @@ function generateEstimatedReadTime(content: string): string {
 }
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export default async function BlogPostPage({ params }: PageProps) {
-  const post = await getPostBySlug(params.slug)
-  const relatedPosts = await getRelatedPosts(params.slug)
+  const { slug } = await params
+  const post = await getPostBySlug(slug)
+  const relatedPosts = await getRelatedPosts(slug)
 
   if (!post || !post.published) {
     notFound()

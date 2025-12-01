@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase/server'
 
 type RouteContext = {
 	params: Promise<{ slug: string }>
 }
 
-export async function GET(request: NextRequest, context: RouteContext) {
+export async function GET(_request: NextRequest, context: RouteContext) {
 	try {
 		const { slug } = await context.params
+		const supabase = createClient()
 		const { data: post, error } = await supabase
 			.from('posts')
 			.select('*')
@@ -29,7 +30,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
 		}
 
 		return NextResponse.json(post)
-	} catch (error: any) {
+	} catch (error) {
 		console.error('Error fetching post:', error)
 		return NextResponse.json(
 			{ error: 'Failed to fetch post' },

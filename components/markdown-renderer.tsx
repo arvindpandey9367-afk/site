@@ -5,7 +5,6 @@ import ReactMarkdown, { type Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import type { CSSProperties } from 'react'
 
 interface MarkdownRendererProps {
 	content: string
@@ -17,8 +16,6 @@ type CodeProps = React.HTMLAttributes<HTMLElement> & {
 	className?: string
 	children: React.ReactNode[]
 }
-
-const syntaxTheme = vscDarkPlus as any
 
 export function MarkdownRenderer({ content, className = '' }: MarkdownRendererProps) {
 	const isClient = typeof window !== 'undefined'
@@ -93,7 +90,7 @@ export function MarkdownRenderer({ content, className = '' }: MarkdownRendererPr
 						{match[1]}
 					</div>
 					<SyntaxHighlighter
-						style={syntaxTheme}
+						style={vscDarkPlus}
 						language={match[1]}
 						PreTag="div"
 						className="mt-0! mb-0! rounded-lg"

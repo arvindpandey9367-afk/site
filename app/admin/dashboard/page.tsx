@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { Button } from '@/components/ui/button'
@@ -33,15 +33,7 @@ export default function AdminDashboard() {
 	const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 	const [postToDelete, setPostToDelete] = useState<string | null>(null)
 
-	useEffect(() => {
-		if (!authLoading && !user) {
-			router.push('/login')
-		} else if (user) {
-			fetchPosts()
-		}
-	}, [user, authLoading, router])
-
-	const fetchPosts = async () => {
+	const fetchPosts = useCallback(async () => {
 		setLoading(true)
 		try {
 			const response = await fetch('/api/admin/posts')
@@ -73,7 +65,15 @@ export default function AdminDashboard() {
 		} finally {
 			setLoading(false)
 		}
-	}
+	}, [router])
+
+	useEffect(() => {
+		if (!authLoading && !user) {
+			router.push('/login')
+		} else if (user) {
+			fetchPosts()
+		}
+	}, [user, authLoading, router, fetchPosts])
 
 	const handleDelete = async (id: string) => {
 		try {

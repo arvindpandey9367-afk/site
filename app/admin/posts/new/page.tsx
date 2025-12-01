@@ -61,9 +61,10 @@ export default function NewPostPage() {
 
 			console.log('Post created successfully:', data)
 			router.push('/admin/dashboard')
-		} catch (error: any) {
+		} catch (error) {
 			console.error('Error creating post:', error)
-			setError(error.message || 'An unexpected error occurred')
+			const message = error instanceof Error ? error.message : 'An unexpected error occurred'
+			setError(message)
 		} finally {
 			setLoading(false)
 		}

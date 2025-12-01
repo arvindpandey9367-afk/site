@@ -4,21 +4,28 @@ import { Button } from '@/components/ui/button'
 import { Calendar, ArrowLeft, Clock, User } from 'lucide-react'
 import { format } from 'date-fns'
 import { PostSummary } from '@/types/post'
+import { createPublicClient } from '@/lib/supabase/server'
+
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 // Server component to fetch posts
 async function getPosts(): Promise<PostSummary[]> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/posts`, {
-      cache: 'no-store' // Don't cache for fresh data
-    })
+    const supabase = createPublicClient()
+    const { data, error } = await supabase
+      .from('posts')
+      .select('id, title, slug, excerpt, published_at, created_at')
+      .eq('published', true)
+      .order('published_at', { ascending: false })
+      .order('created_at', { ascending: false })
 
-    if (!response.ok) {
-      console.error('Failed to fetch posts:', response.status)
+    if (error) {
+      console.error('Failed to fetch posts:', error)
       return []
     }
 
-    const posts = await response.json()
-    return posts || []
+    return (data as PostSummary[]) || []
   } catch (error) {
     console.error('Error fetching posts:', error)
     return []
@@ -61,7 +68,7 @@ export default async function BlogPage() {
           <div className="flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
             <span className="flex items-center gap-1">
               <User className="h-4 w-4" />
-              <span>John Doe</span>
+              <span>Arvind Pandey</span>
             </span>
             <span>•</span>
             <span>{posts.length} Articles</span>

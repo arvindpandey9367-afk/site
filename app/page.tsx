@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Home, User, Mail, Github, Linkedin, BookOpen, ArrowRight } from 'lucide-react'
+import { User, Mail, Github, Linkedin, ArrowRight } from 'lucide-react'
 
 export default function HomePage() {
   const projects = [
@@ -31,7 +31,7 @@ export default function HomePage() {
             <div className="inline-block p-4 bg-primary/10 rounded-full mb-6">
               <User className="h-12 w-12 text-primary" />
             </div>
-            <h1 className="text-5xl font-bold mb-4">John Doe</h1>
+            <h1 className="text-5xl font-bold mb-4">Arvind Pandey</h1>
             <p className="text-xl text-muted-foreground mb-8">
               Full Stack Developer & UI/UX Designer
             </p>

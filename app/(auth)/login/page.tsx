@@ -26,8 +26,9 @@ export default function LoginPage() {
 		try {
 			await signIn(email, password)
 			router.push('/admin/dashboard')
-		} catch (err: any) {
-			setError(err.message || 'Failed to sign in')
+		} catch (err) {
+			const message = err instanceof Error ? err.message : 'Failed to sign in'
+			setError(message)
 		} finally {
 			setLoading(false)
 		}

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { slugify } from '@/lib/utils'
 
 type RouteContext = {
 	params: Promise<{ id: string }>
@@ -28,8 +29,9 @@ export async function GET(
 
 		if (error) throw error
 		return NextResponse.json(post)
-	} catch (error: any) {
-		return NextResponse.json({ error: error.message }, { status: 500 })
+	} catch (error) {
+		const message = error instanceof Error ? error.message : 'Unknown error'
+		return NextResponse.json({ error: message }, { status: 500 })
 	}
 }
 
@@ -53,7 +55,7 @@ export async function PUT(
 
 		const postData = {
 			title,
-			slug,
+			slug: slugify(slug || title),
 			content,
 			excerpt,
 			published,
@@ -70,8 +72,9 @@ export async function PUT(
 
 		if (error) throw error
 		return NextResponse.json(data)
-	} catch (error: any) {
-		return NextResponse.json({ error: error.message }, { status: 500 })
+	} catch (error) {
+		const message = error instanceof Error ? error.message : 'Unknown error'
+		return NextResponse.json({ error: message }, { status: 500 })
 	}
 }
 
@@ -97,7 +100,8 @@ export async function DELETE(
 
 		if (error) throw error
 		return NextResponse.json({ success: true })
-	} catch (error: any) {
-		return NextResponse.json({ error: error.message }, { status: 500 })
+	} catch (error) {
+		const message = error instanceof Error ? error.message : 'Unknown error'
+		return NextResponse.json({ error: message }, { status: 500 })
 	}
 }

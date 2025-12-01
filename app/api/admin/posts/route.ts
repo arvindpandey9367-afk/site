@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase/server'
+import { slugify } from '@/lib/utils'
 
 export async function GET(request: NextRequest) {
 	try {
@@ -17,6 +18,7 @@ export async function GET(request: NextRequest) {
 
 		// For now, let's skip auth check for development
 		// In production, you should verify the session properly
+		const supabase = createClient()
 		const { data: posts, error } = await supabase
 			.from('posts')
 			.select('*')
@@ -28,7 +30,7 @@ export async function GET(request: NextRequest) {
 		}
 
 		return NextResponse.json(posts || [])
-	} catch (error: any) {
+	} catch (error) {
 		console.error('Unexpected error:', error)
 		return NextResponse.json([], { status: 200 })
 	}
@@ -39,6 +41,7 @@ export async function POST(request: NextRequest) {
 		// For development, skip auth check
 		// In production, add proper authentication
 
+		const supabase = createClient()
 		const body = await request.json()
 		const { title, slug, content, excerpt, published } = body
 
@@ -52,7 +55,7 @@ export async function POST(request: NextRequest) {
 
 		const postData = {
 			title,
-			slug,
+			slug: slugify(slug || title),
 			content,
 			excerpt: excerpt || '',
 			published: published || false,
@@ -75,7 +78,7 @@ export async function POST(request: NextRequest) {
 		}
 
 		return NextResponse.json(data, { status: 201 })
-	} catch (error: any) {
+	} catch (error) {
 		console.error('Unexpected error:', error)
 		return NextResponse.json(
 			{ error: 'Internal server error' },

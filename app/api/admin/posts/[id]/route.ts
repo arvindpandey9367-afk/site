@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase/server'
+import { slugify } from '@/lib/utils'
 
 type RouteContext = {
 	params: Promise<{ id: string }>
@@ -11,6 +12,7 @@ export async function GET(
 ) {
 	try {
 		const { id } = await context.params
+		const supabase = createClient()
 		const { data: post, error } = await supabase
 			.from('posts')
 			.select('*')
@@ -31,7 +33,7 @@ export async function GET(
 		}
 
 		return NextResponse.json(post)
-	} catch (error: any) {
+	} catch (error) {
 		console.error('Error fetching post:', error)
 		return NextResponse.json(
 			{ error: 'Failed to fetch post' },
@@ -46,6 +48,7 @@ export async function PUT(
 ) {
 	try {
 		const { id } = await context.params
+		const supabase = createClient()
 		const body = await request.json()
 		const { title, slug, content, excerpt, published } = body
 
@@ -59,7 +62,7 @@ export async function PUT(
 
 		const postData = {
 			title,
-			slug,
+			slug: slugify(slug || title),
 			content,
 			excerpt: excerpt || '',
 			published: published || false,
@@ -83,7 +86,7 @@ export async function PUT(
 		}
 
 		return NextResponse.json(data)
-	} catch (error: any) {
+	} catch (error) {
 		console.error('Unexpected error:', error)
 		return NextResponse.json(
 			{ error: 'Internal server error' },
@@ -98,6 +101,7 @@ export async function DELETE(
 ) {
 	try {
 		const { id } = await context.params
+		const supabase = createClient()
 		const { error } = await supabase
 			.from('posts')
 			.delete()
@@ -112,7 +116,7 @@ export async function DELETE(
 		}
 
 		return NextResponse.json({ success: true })
-	} catch (error: any) {
+	} catch (error) {
 		console.error('Unexpected error:', error)
 		return NextResponse.json(
 			{ error: 'Internal server error' },
