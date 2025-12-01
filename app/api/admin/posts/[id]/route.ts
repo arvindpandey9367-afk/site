@@ -1,21 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 
-interface Params {
-	params: {
-		id: string
-	}
+type RouteContext = {
+	params: Promise<{ id: string }>
 }
 
 export async function GET(
 	request: NextRequest,
-	{ params }: Params
+	context: RouteContext
 ) {
 	try {
+		const { id } = await context.params
 		const { data: post, error } = await supabase
 			.from('posts')
 			.select('*')
-			.eq('id', params.id)
+			.eq('id', id)
 			.single()
 
 		if (error) {
@@ -43,9 +42,10 @@ export async function GET(
 
 export async function PUT(
 	request: NextRequest,
-	{ params }: Params
+	context: RouteContext
 ) {
 	try {
+		const { id } = await context.params
 		const body = await request.json()
 		const { title, slug, content, excerpt, published } = body
 
@@ -70,7 +70,7 @@ export async function PUT(
 		const { data, error } = await supabase
 			.from('posts')
 			.update(postData)
-			.eq('id', params.id)
+			.eq('id', id)
 			.select()
 			.single()
 
@@ -94,13 +94,14 @@ export async function PUT(
 
 export async function DELETE(
 	request: NextRequest,
-	{ params }: Params
+	context: RouteContext
 ) {
 	try {
+		const { id } = await context.params
 		const { error } = await supabase
 			.from('posts')
 			.delete()
-			.eq('id', params.id)
+			.eq('id', id)
 
 		if (error) {
 			console.error('Delete error:', error)

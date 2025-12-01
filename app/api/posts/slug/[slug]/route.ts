@@ -1,18 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 
-interface Params {
-	params: {
-		slug: string
-	}
+type RouteContext = {
+	params: Promise<{ slug: string }>
 }
 
-export async function GET(request: NextRequest, { params }: Params) {
+export async function GET(request: NextRequest, context: RouteContext) {
 	try {
+		const { slug } = await context.params
 		const { data: post, error } = await supabase
 			.from('posts')
 			.select('*')
-			.eq('slug', params.slug)
+			.eq('slug', slug)
 			.eq('published', true)
 			.single()
 

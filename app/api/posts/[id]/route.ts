@@ -1,11 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
+type RouteContext = {
+	params: Promise<{ id: string }>
+}
+
 export async function GET(
 	request: NextRequest,
-	{ params }: { params: { id: string } }
+	context: RouteContext
 ) {
 	try {
+		const { id } = await context.params
 		const supabase = createClient()
 
 		// Check if user is authenticated
@@ -18,7 +23,7 @@ export async function GET(
 		const { data: post, error } = await supabase
 			.from('posts')
 			.select('*')
-			.eq('id', params.id)
+			.eq('id', id)
 			.single()
 
 		if (error) throw error
@@ -30,9 +35,10 @@ export async function GET(
 
 export async function PUT(
 	request: NextRequest,
-	{ params }: { params: { id: string } }
+	context: RouteContext
 ) {
 	try {
+		const { id } = await context.params
 		const supabase = createClient()
 
 		// Check if user is authenticated
@@ -58,7 +64,7 @@ export async function PUT(
 		const { data, error } = await supabase
 			.from('posts')
 			.update(postData)
-			.eq('id', params.id)
+			.eq('id', id)
 			.select()
 			.single()
 
@@ -71,9 +77,10 @@ export async function PUT(
 
 export async function DELETE(
 	request: NextRequest,
-	{ params }: { params: { id: string } }
+	context: RouteContext
 ) {
 	try {
+		const { id } = await context.params
 		const supabase = createClient()
 
 		// Check if user is authenticated
@@ -86,7 +93,7 @@ export async function DELETE(
 		const { error } = await supabase
 			.from('posts')
 			.delete()
-			.eq('id', params.id)
+			.eq('id', id)
 
 		if (error) throw error
 		return NextResponse.json({ success: true })

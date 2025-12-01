@@ -8,7 +8,7 @@ import { MarkdownRenderer } from '@/components/markdown-renderer'
 import { Post } from '@/types/post'
 
 // Server component to fetch post by slug
-async function getPostBySlug(slug: string): Promise<Post | null> {
+export async function getPostBySlug(slug: string): Promise<Post | null> {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/posts/slug/${slug}`,
