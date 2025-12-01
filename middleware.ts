@@ -1,25 +1,36 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { createClient } from '@/lib/supabase/middleware'
+
+const transferCookies = (from: NextResponse, to: NextResponse) => {
+	from.cookies.getAll().forEach(({ name, value }) => {
+		to.cookies.set(name, value)
+	})
+}
 
 export async function middleware(request: NextRequest) {
-  // Get the session cookie
-  const session = request.cookies.get('sb-access-token')
+	const { supabase, response } = createClient(request)
+	const {
+		data: { session },
+	} = await supabase.auth.getSession()
 
-  // Protect admin routes
-  if (request.nextUrl.pathname.startsWith('/admin')) {
-    if (!session) {
-      const loginUrl = new URL('/login', request.url)
-      return NextResponse.redirect(loginUrl)
-    }
-  }
+	const pathname = request.nextUrl.pathname
 
-  // Redirect from login if already logged in
-  if (request.nextUrl.pathname === '/login' && session) {
-    const dashboardUrl = new URL('/admin/dashboard', request.url)
-    return NextResponse.redirect(dashboardUrl)
-  }
+	if (pathname.startsWith('/admin') && !session) {
+		const loginUrl = new URL('/login', request.url)
+		const redirectResponse = NextResponse.redirect(loginUrl)
+		transferCookies(response, redirectResponse)
+		return redirectResponse
+	}
 
-  return NextResponse.next()
+	if (pathname === '/login' && session) {
+		const dashboardUrl = new URL('/admin/dashboard', request.url)
+		const redirectResponse = NextResponse.redirect(dashboardUrl)
+		transferCookies(response, redirectResponse)
+		return redirectResponse
+	}
+
+	return response
 }
 
 export const config = {

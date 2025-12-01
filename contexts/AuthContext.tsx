@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
-import { Session, User } from '@supabase/supabase-js'
+import { type Session, type User, type AuthChangeEvent } from '@supabase/supabase-js'
 import { useRouter } from 'next/navigation'
 
 interface AuthContextType {
@@ -22,27 +22,47 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const router = useRouter()
 
 	useEffect(() => {
-		// Check active sessions
+		const syncSession = async (event: AuthChangeEvent, session: Session | null) => {
+			try {
+				await fetch('/auth/callback', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ event, session }),
+				})
+			} catch (error) {
+				console.error('Failed to sync auth session:', error)
+			}
+		}
+
 		const checkSession = async () => {
 			try {
 				const { data: { session } } = await supabase.auth.getSession()
 				setSession(session)
 				setUser(session?.user ?? null)
+				setLoading(false)
+
+				if (session) {
+					await syncSession('SIGNED_IN', session)
+				}
 			} catch (error) {
 				console.error('Error checking session:', error)
-			} finally {
 				setLoading(false)
 			}
 		}
 
 		checkSession()
 
-		// Listen for auth changes
-		const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-			setSession(session)
-			setUser(session?.user ?? null)
-			setLoading(false)
-		})
+		const { data: { subscription } } = supabase.auth.onAuthStateChange(
+			async (event, session) => {
+				setSession(session)
+				setUser(session?.user ?? null)
+				setLoading(false)
+
+				if (['SIGNED_IN', 'SIGNED_OUT', 'TOKEN_REFRESHED', 'USER_UPDATED'].includes(event)) {
+					await syncSession(event, session)
+				}
+			}
+		)
 
 		return () => subscription.unsubscribe()
 	}, [])
@@ -63,7 +83,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			setSession(session)
 			setUser(session?.user ?? null)
 
-		} catch (error: any) {
+		} catch (error) {
 			console.error('Sign in error:', error)
 			throw error
 		}
