@@ -31,6 +31,9 @@ function getReadingTime(content: string): number {
   return Math.ceil(words / wordsPerMinute)
 }
 
+const getPostDate = (post: PostSummary) =>
+  post.published_at ?? post.created_at ?? new Date().toISOString()
+
 export default async function BlogPage() {
   const posts = await getPosts()
 
@@ -75,7 +78,7 @@ export default async function BlogPage() {
                   <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
                     <span className="flex items-center gap-1">
                       <Calendar className="h-4 w-4" />
-                      {format(new Date(posts[0].published_at || posts[0].created_at), 'MMMM d, yyyy')}
+                      {format(new Date(getPostDate(posts[0])), 'MMMM d, yyyy')}
                     </span>
                     <span className="flex items-center gap-1">
                       <Clock className="h-4 w-4" />
@@ -143,7 +146,7 @@ export default async function BlogPage() {
                     <div className="flex items-center justify-between">
                       <span className="flex items-center gap-1 text-sm text-muted-foreground">
                         <Calendar className="h-4 w-4" />
-                        {format(new Date(post.published_at || post.created_at), 'MMM d, yyyy')}
+                        {format(new Date(getPostDate(post)), 'MMM d, yyyy')}
                       </span>
                       <Button variant="ghost" size="sm" asChild className="group-hover:text-primary">
                         <Link href={`/blog/${post.slug}`}>

@@ -16,4 +16,5 @@ export interface PostSummary {
   slug: string
   excerpt: string
   published_at: string | null
+  created_at?: string | null
 }
