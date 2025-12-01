@@ -51,16 +51,18 @@ export async function PUT(
 		}
 
 		const body = await request.json()
-		const { title, slug, content, excerpt, published } = body
+		const { title, slug, content, excerpt, featured_image } = body
 
+		const now = new Date().toISOString()
 		const postData = {
 			title,
 			slug: slugify(slug || title),
 			content,
 			excerpt,
-			published,
-			updated_at: new Date().toISOString(),
-			...(published && { published_at: new Date().toISOString() })
+			featured_image: featured_image || null,
+			published: true,
+			updated_at: now,
+			published_at: body.published_at || now
 		}
 
 		const { data, error } = await supabase

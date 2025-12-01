@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
 
 		const supabase = createRouteClient(request)
 		const body = await request.json()
-		const { title, slug, content, excerpt, published } = body
+		const { title, slug, content, excerpt, featured_image } = body
 
 		// Validate required fields
 		if (!title || !slug || !content) {
@@ -39,14 +39,16 @@ export async function POST(request: NextRequest) {
 			)
 		}
 
+		const now = new Date().toISOString()
 		const postData = {
 			title,
 			slug: slugify(slug || title),
 			content,
 			excerpt: excerpt || '',
-			published: published || false,
-			published_at: published ? new Date().toISOString() : null,
-			updated_at: new Date().toISOString()
+			featured_image: featured_image || null,
+			published: true,
+			published_at: now,
+			updated_at: now,
 		}
 
 		const { data, error } = await supabase

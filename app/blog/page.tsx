@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Calendar, ArrowLeft, Clock, User } from 'lucide-react'
@@ -15,7 +16,7 @@ async function getPosts(): Promise<PostSummary[]> {
     const supabase = createPublicClient()
     const { data, error } = await supabase
       .from('posts')
-      .select('id, title, slug, excerpt, published_at, created_at')
+      .select('id, title, slug, excerpt, featured_image, published_at, created_at')
       .eq('published', true)
       .order('published_at', { ascending: false })
       .order('created_at', { ascending: false })
@@ -43,6 +44,22 @@ const getPostDate = (post: PostSummary) =>
 
 export default async function BlogPage() {
   const posts = await getPosts()
+  const getCardImage = (src?: string | null, alt?: string) => (
+    <div className="relative h-48 w-full overflow-hidden bg-gradient-to-br from-primary/10 to-purple-600/10 flex items-center justify-center">
+      {src ? (
+        <Image
+          src={src}
+          alt={alt || 'Blog featured image'}
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
+          className="object-cover"
+          unoptimized
+        />
+      ) : (
+        <div className="text-sm text-muted-foreground">No image provided</div>
+      )}
+    </div>
+  )
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
@@ -109,12 +126,7 @@ export default async function BlogPage() {
                     </Link>
                   </Button>
                 </div>
-                <div className="md:w-1/3 bg-gradient-to-br from-primary/10 to-purple-600/10 p-8 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-6xl font-bold text-primary/50 mb-2">01</div>
-                    <div className="text-sm text-muted-foreground">Featured Post</div>
-                  </div>
-                </div>
+                <div className="md:w-1/3">{getCardImage(posts[0].featured_image, posts[0].title)}</div>
               </div>
             </Card>
           </div>
@@ -131,6 +143,7 @@ export default async function BlogPage() {
                   className="group hover:shadow-xl transition-all duration-300 border hover:border-primary/30 overflow-hidden"
                 >
                   <CardHeader>
+                    {getCardImage(post.featured_image, post.title)}
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-1 rounded">
                         Article {index + 2}

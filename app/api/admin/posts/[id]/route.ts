@@ -50,7 +50,7 @@ export async function PUT(
 		const { id } = await context.params
 		const supabase = createRouteClient(request)
 		const body = await request.json()
-		const { title, slug, content, excerpt, published } = body
+		const { title, slug, content, excerpt, featured_image } = body
 
 		// Validate required fields
 		if (!title || !slug || !content) {
@@ -60,14 +60,16 @@ export async function PUT(
 			)
 		}
 
+		const now = new Date().toISOString()
 		const postData = {
 			title,
 			slug: slugify(slug || title),
 			content,
 			excerpt: excerpt || '',
-			published: published || false,
-			updated_at: new Date().toISOString(),
-			...(published && !body.published_at ? { published_at: new Date().toISOString() } : {})
+			featured_image: featured_image || null,
+			published: true,
+			updated_at: now,
+			published_at: body.published_at || now,
 		}
 
 		const { data, error } = await supabase

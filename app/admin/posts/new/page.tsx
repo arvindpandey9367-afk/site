@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { Switch } from '@/components/ui/switch'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ArrowLeft, Save, Loader2 } from 'lucide-react'
 
@@ -19,10 +18,12 @@ export default function NewPostPage() {
 		slug: '',
 		content: '',
 		excerpt: '',
-		published: false,
+		featured_image: '',
 	})
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState('')
+	const [uploadingImage, setUploadingImage] = useState(false)
+	const [uploadError, setUploadError] = useState('')
 
 	useEffect(() => {
 		if (!authLoading && !user) {
@@ -67,6 +68,30 @@ export default function NewPostPage() {
 			setError(message)
 		} finally {
 			setLoading(false)
+		}
+	}
+
+	const handleImageUpload = async (file: File) => {
+		setUploadError('')
+		setUploadingImage(true)
+		try {
+			const body = new FormData()
+			body.append('file', file)
+			const response = await fetch('/api/admin/posts/upload', {
+				method: 'POST',
+				body,
+			})
+			const data = await response.json()
+			if (!response.ok) {
+				throw new Error(data.error || 'Failed to upload image')
+			}
+			setFormData((prev) => ({ ...prev, featured_image: data.url }))
+		} catch (error) {
+			console.error('Image upload failed:', error)
+			const message = error instanceof Error ? error.message : 'Failed to upload image'
+			setUploadError(message)
+		} finally {
+			setUploadingImage(false)
 		}
 	}
 
@@ -153,6 +178,37 @@ export default function NewPostPage() {
 							</div>
 
 							<div className="space-y-2">
+								<Label htmlFor="featured_image">
+									Featured image URL
+								</Label>
+								<Input
+									id="featured_image"
+									value={formData.featured_image}
+									onChange={(e) => setFormData({ ...formData, featured_image: e.target.value })}
+									placeholder="https://example.com/image.jpg"
+									disabled={loading}
+								/>
+								<p className="text-sm text-muted-foreground">
+									Optional image shown on the blog list and article header.
+								</p>
+								<div className="flex flex-col gap-2">
+									<Input
+										type="file"
+										accept="image/*"
+										onChange={(event) => {
+											const file = event.target.files?.[0]
+											if (file) {
+												void handleImageUpload(file)
+											}
+										}}
+										disabled={loading || uploadingImage}
+									/>
+									{uploadingImage && <p className="text-sm text-muted-foreground">Uploading...</p>}
+									{uploadError && <p className="text-sm text-destructive">{uploadError}</p>}
+								</div>
+							</div>
+
+							<div className="space-y-2">
 								<Label htmlFor="excerpt">Excerpt</Label>
 								<Textarea
 									id="excerpt"
@@ -192,18 +248,6 @@ console.log('Hello World');
 									required
 									disabled={loading}
 								/>
-							</div>
-
-							<div className="flex items-center space-x-2">
-								<Switch
-									id="published"
-									checked={formData.published}
-									onCheckedChange={(checked) => setFormData({ ...formData, published: checked })}
-									disabled={loading}
-								/>
-								<Label htmlFor="published" className="cursor-pointer">
-									Publish immediately
-								</Label>
 							</div>
 
 							<div className="flex justify-end gap-4 pt-4">

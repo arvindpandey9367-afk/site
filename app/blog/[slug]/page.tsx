@@ -4,6 +4,7 @@ import { format } from 'date-fns'
 import { Calendar, Clock, ArrowLeft, Share2, BookOpen, Tag, Eye } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import Image from 'next/image'
 import { MarkdownRenderer } from '@/components/markdown-renderer'
 import { Post } from '@/types/post'
 import { createPublicClient } from '@/lib/supabase/server'
@@ -160,14 +161,24 @@ export default async function BlogPostPage({ params }: PageProps) {
             </span>
           </div>
 
-          {/* Featured Image Placeholder */}
           <div className="relative h-64 md:h-80 rounded-xl overflow-hidden mb-8 bg-gradient-to-r from-primary/20 to-purple-600/20">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-6xl mb-4">📝</div>
-                <p className="text-muted-foreground">Featured Image</p>
+            {post.featured_image ? (
+              <Image
+                src={post.featured_image}
+                alt={post.title}
+                fill
+                sizes="(max-width: 768px) 100vw, 700px"
+                className="object-cover"
+                unoptimized
+              />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-6xl mb-4">📝</div>
+                  <p className="text-muted-foreground">Featured Image</p>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </header>
 

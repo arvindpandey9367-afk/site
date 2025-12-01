@@ -1,12 +1,12 @@
 import { notFound } from 'next/navigation'
 import PostEditor from '../editor'
-import { createClient } from '@/lib/supabase/server'
+import { createPublicClient } from '@/lib/supabase/server'
 import { Post } from '@/types/post'
 
 interface PageProps {
-	params: {
+	params: Promise<{
 		id: string
-	}
+	}>
 }
 
 const mapPostToEditorData = (post: Post) => ({
@@ -15,15 +15,16 @@ const mapPostToEditorData = (post: Post) => ({
 	slug: post.slug ?? '',
 	content: post.content ?? '',
 	excerpt: post.excerpt ?? '',
-	published: Boolean(post.published),
+	featured_image: post.featured_image ?? '',
 })
 
 export default async function EditPostPage({ params }: PageProps) {
-	const supabase = createClient()
+	const { id } = await params
+	const supabase = createPublicClient()
 	const { data: post, error } = await supabase
 		.from('posts')
 		.select('*')
-		.eq('id', params.id)
+		.eq('id', id)
 		.single<Post>()
 
 	if (error) {
