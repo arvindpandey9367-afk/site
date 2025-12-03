@@ -126,9 +126,9 @@ export default async function BlogPostPage({ params }: PageProps) {
           <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-8">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-purple-600 flex items-center justify-center text-white font-bold">
-                JD
+                AP
               </div>
-              <span>John Doe</span>
+              <span>Arvind Pandey</span>
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
@@ -224,14 +224,14 @@ export default async function BlogPostPage({ params }: PageProps) {
         <Card className="p-8 mb-12">
           <div className="flex flex-col md:flex-row items-start gap-6">
             <div className="w-20 h-20 rounded-full bg-gradient-to-r from-primary to-purple-600 flex items-center justify-center text-white font-bold text-2xl">
-              JD
+              AP
             </div>
             <div>
-              <h3 className="font-bold text-xl mb-3">John Doe</h3>
+              <h3 className="font-bold text-xl mb-3">Arvind Pandey</h3>
               <p className="text-muted-foreground mb-4 leading-relaxed">
-                Full-stack developer passionate about creating beautiful, functional web applications.
-                With over 5 years of experience in modern web technologies, I love sharing knowledge
-                through writing and helping others learn.
+                Founder and chief editor of this blog. Arvind is a product-focused engineer who
+                crafts high-performance web experiences, documents the process, and mentors other
+                developers in modern JavaScript, TypeScript, and cloud-native workflows.
               </p>
               <div className="flex flex-wrap gap-2">
                 <Button variant="ghost" size="sm" asChild>
