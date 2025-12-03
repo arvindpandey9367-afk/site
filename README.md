@@ -2,6 +2,18 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Required environment variables
+
+Create a `.env.local` with the Supabase credentials and storage bucket configuration:
+
+```
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+SUPABASE_POSTS_BUCKET=post-images
+```
+
+Make sure the `SUPABASE_POSTS_BUCKET` exists in your Supabase Storage (or adjust the value to match an existing bucket). The bucket only needs `public` access if you rely on the generated public URLs from the admin upload endpoint.
+
 First, run the development server:
 
 ```bash

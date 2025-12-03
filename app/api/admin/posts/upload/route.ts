@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createRouteClient } from '@/lib/supabase/server'
 
-const BUCKET_NAME = process.env.NEXT_PUBLIC_SUPABASE_POSTS_BUCKET || 'post-images'
+const BUCKET_NAME =
+  process.env.SUPABASE_POSTS_BUCKET ||
+  process.env.NEXT_PUBLIC_SUPABASE_POSTS_BUCKET ||
+  'post-images'
 
 export async function POST(request: NextRequest) {
   try {
@@ -24,8 +27,13 @@ export async function POST(request: NextRequest) {
     })
 
     if (uploadError) {
+      const message =
+        uploadError.message.includes('not found') || uploadError.message.includes('does not exist')
+          ? `Supabase bucket "${BUCKET_NAME}" not found. Create it in Storage or set SUPABASE_POSTS_BUCKET.`
+          : uploadError.message
+
       console.error('Supabase upload error:', uploadError)
-      return NextResponse.json({ error: uploadError.message }, { status: 500 })
+      return NextResponse.json({ error: message }, { status: 500 })
     }
 
     const { data } = supabase.storage.from(BUCKET_NAME).getPublicUrl(filePath)
