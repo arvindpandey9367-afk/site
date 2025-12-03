@@ -6,6 +6,7 @@ import { format } from 'date-fns'
 import { PostSummary } from '@/types/post'
 import { createPublicClient } from '@/lib/supabase/server'
 import Image from 'next/image'
+import { LandingNav } from '@/components/landing-nav'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -47,9 +48,10 @@ export default async function HomePage() {
   const posts = await getPosts()
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-background text-foreground">
+      <LandingNav />
       {/* Hero Section */}
-      <section className="py-15 px-4">
+      <section id="home" className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center">
             <div className="inline-block p-2 bg-primary/10 rounded-full mb-6">
@@ -62,10 +64,10 @@ export default async function HomePage() {
             </p>
             <div className="flex justify-center gap-4">
               <Button asChild>
-                <Link href="/blog">View Blog</Link>
+                <a href="#blog">View Blog</a>
               </Button>
               <Button variant="outline" asChild>
-                <Link href="#contact">Contact Me</Link>
+                <a href="#contact">Contact Me</a>
               </Button>
             </div>
           </div>
@@ -73,7 +75,7 @@ export default async function HomePage() {
       </section>
 
       {/* About Me Section */}
-      <section className="py-22 bg-muted/50">
+      <section id="about" className="py-22 bg-muted/50">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">About Me</h2>
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -147,7 +149,7 @@ export default async function HomePage() {
       </section>
 
       {/* Blog Section */}
-      <section className="py-16 px-4 bg-linear-to-b from-background to-muted/20">
+      <section id="blog" className="py-16 px-4 bg-linear-to-b from-background to-muted/20">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Latest Blog Posts</h2>
