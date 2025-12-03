@@ -49,16 +49,16 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-20 px-4">
+      <section className="py-15 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center">
-            <div className="inline-block p-4 bg-primary/10 rounded-full mb-6">
+            <div className="inline-block p-2 bg-primary/10 rounded-full mb-6">
               {/* <User className="h-12 w-12 text-primary" /> */}
-              <Image src={"/img1.jpg"} alt='pp' height={300} width={300} className='rounded-full' />
+              <Image src={"/img0.jpg"} alt='pp' height={300} width={300} className='rounded-full object-cover' />
             </div>
             <h1 className="text-5xl font-bold mb-4">Arvind Pandey</h1>
             <p className="text-xl text-muted-foreground mb-8">
-              Full Stack Developer & UI/UX Designer
+              IT lecturer and Tech consultant
             </p>
             <div className="flex justify-center gap-4">
               <Button asChild>
@@ -73,7 +73,7 @@ export default async function HomePage() {
       </section>
 
       {/* About Me Section */}
-      <section className="py-16 bg-muted/50">
+      <section className="py-22 bg-muted/50">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">About Me</h2>
           <div className="grid md:grid-cols-2 gap-12 items-center">
