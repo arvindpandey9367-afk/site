@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { User, Mail, Github, Linkedin, ArrowRight, Calendar, Clock, BookOpen, Briefcase, GraduationCap } from 'lucide-react'
+import { Mail, Linkedin, ArrowRight, Calendar, Clock, BookOpen, Briefcase, GraduationCap } from 'lucide-react'
 import { format } from 'date-fns'
 import { PostSummary } from '@/types/post'
 import { createPublicClient } from '@/lib/supabase/server'
@@ -95,7 +95,7 @@ export default async function HomePage() {
                   </div>
                   <div>
                     <h4 className="font-semibold mb-1">Education</h4>
-                    <p className="text-sm text-muted-foreground">Master's in Computer Science</p>
+                    <p className="text-sm text-muted-foreground">Master&apos;s in Computer Science</p>
                   </div>
                 </div>
 

@@ -3,11 +3,7 @@
 import { usePathname } from 'next/navigation'
 import { useCallback } from 'react'
 import { Button } from '@/components/ui/button'
-import { Share2, Linkedin } from 'lucide-react'
-
-const WHATSAPP_NUMBER = '9779857088851'
-const LINKEDIN_PROFILE = 'https://www.linkedin.com/in/arvind-pandey-09bb83109/'
-const EMAIL = 'arvindtech93@gmail.com'
+import { Share2, Copy } from 'lucide-react'
 
 export function ShareButtons() {
   const pathname = usePathname()
@@ -18,6 +14,8 @@ export function ShareButtons() {
       : `${process.env.NEXT_PUBLIC_SITE_URL ?? ''}${pathname ?? ''}`
 
   const handleCopy = useCallback(async () => {
+    if (typeof navigator === 'undefined') return
+
     try {
       await navigator.clipboard.writeText(currentUrl)
     } catch (err) {
@@ -25,48 +23,35 @@ export function ShareButtons() {
     }
   }, [currentUrl])
 
-  const encodedUrl = encodeURIComponent(currentUrl)
-  const encodedMessage = encodeURIComponent(`Check this out: ${currentUrl}`)
+  const handleShare = useCallback(async () => {
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share({
+          title: document?.title ?? 'Check this out',
+          text: 'Thought you might like this.',
+          url: currentUrl,
+        })
+        return
+      } catch (err) {
+        console.error('Share failed', err)
+      }
+    }
 
-  const linkedinShare = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`
-  const whatsappShare = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`
-  const mailtoShare = `mailto:${EMAIL}?subject=${encodeURIComponent(
-    'I wanted to share this with you'
-  )}&body=${encodedMessage}`
+    // Fallback to copying the link if the share API isn't supported
+    await handleCopy()
+  }, [currentUrl, handleCopy])
 
   return (
     <div className="flex flex-wrap gap-2">
       <Button
-        asChild
+        type="button"
         variant="outline"
         size="sm"
+        onClick={handleShare}
         className="gap-2 transition duration-200 hover:scale-105 hover:shadow-md cursor-pointer"
       >
-        <a href={linkedinShare} target="_blank" rel="noopener noreferrer">
-          <Linkedin className="h-4 w-4" />
-          LinkedIn
-        </a>
-      </Button>
-      <Button
-        asChild
-        variant="outline"
-        size="sm"
-        className="gap-2 transition duration-200 hover:scale-105 hover:shadow-md cursor-pointer"
-      >
-        <a href={whatsappShare} target="_blank" rel="noopener noreferrer">
-          <Share2 className="h-4 w-4" />
-          WhatsApp
-        </a>
-      </Button>
-      <Button
-        asChild
-        variant="outline"
-        size="sm"
-        className="gap-2 transition duration-200 hover:scale-105 hover:shadow-md cursor-pointer"
-      >
-        <a href={mailtoShare}>
-          Email
-        </a>
+        <Share2 className="h-4 w-4" />
+        Share
       </Button>
       <Button
         type="button"
@@ -75,6 +60,7 @@ export function ShareButtons() {
         onClick={handleCopy}
         className="gap-2 transition duration-200 hover:scale-105 hover:shadow-md cursor-pointer"
       >
+        <Copy className="h-4 w-4" />
         Copy Link
       </Button>
     </div>

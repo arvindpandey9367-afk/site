@@ -126,9 +126,14 @@ export default async function BlogPostPage({ params }: PageProps) {
           {/* Meta Information */}
           <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-8">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-linear-to-r from-primary to-purple-600 flex items-center justify-center text-white font-bold">
-                AP
-              </div>
+              <Image
+                src="/img0.jpg"
+                alt="Arvind Pandey"
+                width={48}
+                height={46}
+                className="h-8 w-8 rounded-full object-cover"
+                priority
+              />
               <span>Arvind Pandey</span>
             </div>
             <div className="flex items-center gap-2">
