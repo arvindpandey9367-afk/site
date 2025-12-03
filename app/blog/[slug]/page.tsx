@@ -220,45 +220,6 @@ export default async function BlogPostPage({ params }: PageProps) {
           </div>
         </Card>
 
-        {/* Author Bio */}
-        <Card className="p-8 mb-12">
-          <div className="flex flex-col md:flex-row items-start gap-6">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-r from-primary to-purple-600 flex items-center justify-center text-white font-bold text-2xl">
-              AP
-            </div>
-            <div>
-              <h3 className="font-bold text-xl mb-3">Arvind Pandey</h3>
-              <p className="text-muted-foreground mb-4 leading-relaxed">
-                Founder and chief editor of this blog. Arvind is a product-focused engineer who
-                crafts high-performance web experiences, documents the process, and mentors other
-                developers in modern JavaScript, TypeScript, and cloud-native workflows.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <Button variant="ghost" size="sm" asChild>
-                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-                    Twitter
-                  </a>
-                </Button>
-                <Button variant="ghost" size="sm" asChild>
-                  <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-                    GitHub
-                  </a>
-                </Button>
-                <Button variant="ghost" size="sm" asChild>
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-                    LinkedIn
-                  </a>
-                </Button>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link href="/">
-                    Portfolio
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </Card>
-
         {/* Related Articles */}
         {relatedPosts.length > 0 && (
           <div className="mb-12">
