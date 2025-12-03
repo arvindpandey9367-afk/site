@@ -131,9 +131,15 @@ export default async function HomePage() {
             </div>
 
             <div className="relative">
-              <div className="aspect-square bg-gradient-to-br from-primary/10 to-purple-600/10 rounded-2xl flex items-center justify-center overflow-hidden">
+              <div className="aspect-square bg-linear-to-br from-primary/10 to-purple-600/10 rounded-2xl flex items-center justify-center overflow-hidden">
                 {/* Replace with your actual image */}
-                <Image src={"/img3.jpeg"} alt='pp' height={500} width={500} className='aspect-square bg-gradient-to-br from-primary/10 to-purple-600/10 rounded-2xl flex items-center justify-center overflow-hidden' />
+                <Image
+                  src="/img3.jpeg"
+                  alt="pp"
+                  height={500}
+                  width={500}
+                  className="aspect-square bg-linear-to-br from-primary/10 to-purple-600/10 rounded-2xl flex items-center justify-center overflow-hidden"
+                />
               </div>
             </div>
           </div>
@@ -141,7 +147,7 @@ export default async function HomePage() {
       </section>
 
       {/* Blog Section */}
-      <section className="py-16 px-4 bg-gradient-to-b from-background to-muted/20">
+      <section className="py-16 px-4 bg-linear-to-b from-background to-muted/20">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Latest Blog Posts</h2>
@@ -203,17 +209,25 @@ export default async function HomePage() {
           <h2 className="text-3xl font-bold mb-8">Get In Touch</h2>
           <div className="flex justify-center gap-6">
             <Button variant="outline" size="icon" asChild>
-              <a href="mailto:hello@example.com">
+              <a href="mailto:arvindtech93@gmail.com">
                 <Mail className="h-5 w-5" />
               </a>
             </Button>
             <Button variant="outline" size="icon" asChild>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-                <Github className="h-5 w-5" />
+              <a
+                href="https://wa.me/9779857088851"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="font-semibold text-sm">WA</span>
               </a>
             </Button>
             <Button variant="outline" size="icon" asChild>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://www.linkedin.com/in/arvind-pandey-09bb83109/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Linkedin className="h-5 w-5" />
               </a>
             </Button>
