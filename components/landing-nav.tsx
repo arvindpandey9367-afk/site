@@ -102,7 +102,7 @@ export function LandingNav() {
 
   return (
     <nav className="fixed top-4 left-1/2 z-50 w-[85%] max-w-3xl -translate-x-1/2">
-      <div className="relative flex items-center rounded-full border border-white/10 bg-black/60 px-7 py-3 text-white shadow-[0_15px_35px_rgba(0,0,0,0.35)] backdrop-blur-2xl">
+      <div className="relative flex items-center rounded-full border border-white/15 bg-[rgba(10,10,10,0.78)] px-8 py-3 text-white shadow-[0_30px_60px_rgba(15,15,15,0.35)] backdrop-blur-2xl">
         <div className="flex items-center">
           <Image
             src="/img0.jpg"
@@ -122,7 +122,7 @@ export function LandingNav() {
         >
           {highlight && (
             <span
-              className="pointer-events-none absolute top-1/2 -translate-y-1/2 rounded-full bg-white/20 transition-all duration-300"
+              className="pointer-events-none absolute top-1/2 -translate-y-1/2 rounded-full bg-white/15 transition-all duration-300"
               style={{
                 left: highlight.left - 10,
                 width: highlight.width + 20,
@@ -141,11 +141,9 @@ export function LandingNav() {
                 onClick={(e) => handleNavClick(e, item.href)}
                 onMouseEnter={() => setHoverIndex(index)}
                 className={`relative z-10 px-4 py-1 font-semibold uppercase tracking-[0.18em] text-xs transition-colors ${
-                  isHovered
-                    ? 'text-black'
-                    : isActive
+                     isActive
                       ? 'text-white'
-                      : 'text-white/65 hover:text-white'
+                      : 'text-white/80 hover:text-white'
                 }`}
                 aria-current={isActive ? 'page' : undefined}
               >
