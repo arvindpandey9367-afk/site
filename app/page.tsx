@@ -51,11 +51,10 @@ export default async function HomePage() {
     <div className="min-h-screen bg-background text-foreground">
       <LandingNav />
       {/* Hero Section */}
-      <section id="home" className="py-20 px-4">
+      <section id="home" className="pt-25 pb-10 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center">
             <div className="inline-block p-2 bg-primary/10 rounded-full mb-6">
-              {/* <User className="h-12 w-12 text-primary" /> */}
               <Image src={"/img0.jpg"} alt='pp' height={300} width={300} className='rounded-full object-cover' />
             </div>
             <h1 className="text-5xl font-bold mb-4">Arvind Pandey</h1>

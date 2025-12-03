@@ -101,22 +101,21 @@ export function LandingNav() {
   const highlight = positions[highlightIndex]
 
   return (
-    <nav className="fixed top-4 left-1/2 z-50 w-[92%] max-w-3xl -translate-x-1/2">
-      <div className="relative flex items-center gap-6 rounded-full border border-white/10 bg-black/50 px-6 py-3 text-white shadow-lg backdrop-blur-xl">
-        <div className="flex items-center gap-3">
+    <nav className="fixed top-4 left-1/2 z-50 w-[85%] max-w-3xl -translate-x-1/2">
+      <div className="relative flex items-center rounded-full border border-white/10 bg-black/60 px-7 py-3 text-white shadow-[0_15px_35px_rgba(0,0,0,0.35)] backdrop-blur-2xl">
+        <div className="flex items-center">
           <Image
             src="/img0.jpg"
-            alt="Arvind Pandey"
+            alt="Profile avatar"
             width={40}
             height={40}
-            className="h-10 w-10 rounded-full border border-white/30 object-cover"
+            className="h-10 w-10 rounded-full border border-white/40 object-cover shadow-inner shadow-black/30"
           />
-          <div className="hidden text-sm font-semibold sm:block">Arvind Pandey</div>
         </div>
 
         <div
           ref={navRef}
-          className="relative hidden items-center gap-4 md:flex"
+          className="relative hidden flex-1 items-center justify-evenly text-sm md:flex"
           onMouseLeave={() => setHoverIndex(null)}
           role="navigation"
           aria-label="Primary"
@@ -125,8 +124,8 @@ export function LandingNav() {
             <span
               className="pointer-events-none absolute top-1/2 -translate-y-1/2 rounded-full bg-white/20 transition-all duration-300"
               style={{
-                left: highlight.left - 8,
-                width: highlight.width + 16,
+                left: highlight.left - 10,
+                width: highlight.width + 20,
                 height: 36,
               }}
             />
@@ -141,8 +140,12 @@ export function LandingNav() {
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item.href)}
                 onMouseEnter={() => setHoverIndex(index)}
-                className={`relative z-10 px-4 py-1 text-sm font-medium transition-colors ${
-                  isHovered ? 'text-black' : isActive ? 'text-white' : 'text-white/80 hover:text-black'
+                className={`relative z-10 px-4 py-1 font-semibold uppercase tracking-[0.18em] text-xs transition-colors ${
+                  isHovered
+                    ? 'text-black'
+                    : isActive
+                      ? 'text-white'
+                      : 'text-white/65 hover:text-white'
                 }`}
                 aria-current={isActive ? 'page' : undefined}
               >
@@ -153,7 +156,7 @@ export function LandingNav() {
         </div>
 
         <button
-          className="ml-auto rounded-lg p-2 text-white transition hover:bg-white/10 md:hidden"
+          className="rounded-full border border-white/20 p-2 text-white transition hover:bg-white/10 md:hidden"
           onClick={() => setIsMobileMenuOpen((prev) => !prev)}
           aria-label="Toggle navigation menu"
         >
@@ -166,7 +169,7 @@ export function LandingNav() {
           isMobileMenuOpen ? 'pointer-events-auto mt-3 opacity-100' : 'pointer-events-none -translate-y-2 opacity-0'
         }`}
       >
-        <div className="rounded-2xl border border-white/10 bg-black/60 p-4 backdrop-blur-xl">
+        <div className="rounded-2xl border border-white/20 bg-black/80 p-4 backdrop-blur-xl">
           {NAV_ITEMS.map((item, index) => (
             <a
               key={item.name}
