@@ -102,7 +102,7 @@ export function LandingNav() {
 
   return (
     <nav className="fixed top-4 left-1/2 z-50 w-[85%] max-w-3xl -translate-x-1/2">
-      <div className="relative flex items-center rounded-full border border-white/15 bg-[rgba(184,184,184,0.78)] px-8 py-3 text-white shadow-[0_30px_60px_rgba(15,15,15,0.35)] backdrop-blur-2xl">
+      <div className="relative flex items-center rounded-full border border-white/15 bg-[rgba(184,184,184,0.78)] px-8 py-3 text-white shadow-[0_30px_60px_rgba(15,15,15,0.35)] backdrop-blur-2xl justify-between">
         <div className="flex items-center">
           <Image
             src="/img0.jpg"
@@ -140,12 +140,10 @@ export function LandingNav() {
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item.href)}
                 onMouseEnter={() => setHoverIndex(index)}
-                className={`relative z-10 px-4 py-1 font-semibold uppercase tracking-[0.18em] text-xs transition-colors ${
-                  
-                  isActive
-                      ? 'text-white'
-                      : 'text-white/80 hover:text-white'
-                }`}
+                className={`relative z-10 px-4 py-1 font-semibold uppercase tracking-[0.18em] text-xs transition-colors ${isActive
+                  ? 'text-white'
+                  : 'text-white/80 hover:text-white'
+                  }`}
                 aria-current={isActive ? 'page' : undefined}
               >
                 {item.name}
@@ -155,7 +153,7 @@ export function LandingNav() {
         </div>
 
         <button
-          className="rounded-full border border-white/20 p-2 text-white transition hover:bg-white/10 md:hidden"
+          className="rounded-full border border-white/20 p-2 text-white transition hover:bg-white/10 md:hidden "
           onClick={() => setIsMobileMenuOpen((prev) => !prev)}
           aria-label="Toggle navigation menu"
         >
@@ -164,9 +162,8 @@ export function LandingNav() {
       </div>
 
       <div
-        className={`md:hidden transition-all duration-300 ${
-          isMobileMenuOpen ? 'pointer-events-auto mt-3 opacity-100' : 'pointer-events-none -translate-y-2 opacity-0'
-        }`}
+        className={`md:hidden transition-all duration-300 ${isMobileMenuOpen ? 'pointer-events-auto mt-3 opacity-100' : 'pointer-events-none -translate-y-2 opacity-0'
+          }`}
       >
         <div className="rounded-2xl border border-white/20 bg-black/80 p-4 backdrop-blur-xl">
           {NAV_ITEMS.map((item, index) => (
@@ -174,9 +171,8 @@ export function LandingNav() {
               key={item.name}
               href={item.href}
               onClick={(e) => handleNavClick(e, item.href)}
-              className={`block rounded-lg px-4 py-3 text-sm font-medium transition ${
-                activeIndex === index ? 'bg-white/20 text-white' : 'text-white/80 hover:bg-white/10 hover:text-white'
-              }`}
+              className={`block rounded-lg px-4 py-3 text-sm font-medium transition ${activeIndex === index ? 'bg-white/20 text-white' : 'text-white/80 hover:bg-white/10 hover:text-white'
+                }`}
               aria-current={activeIndex === index ? 'page' : undefined}
             >
               {item.name}

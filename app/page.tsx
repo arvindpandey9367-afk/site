@@ -55,12 +55,12 @@ export default async function HomePage() {
         <div className="max-w-6xl mx-auto w-full">
           <div className="text-center">
             <div className="inline-block p-3 bg-primary/5 rounded-full mb-8 hover:scale-105 transition-transform duration-300">
-              <Image 
-                src="/img0.jpg" 
-                alt="Arvind Pandey" 
-                height={280} 
-                width={280} 
-                className="rounded-full object-cover shadow-xl" 
+              <Image
+                src="/img0.jpg"
+                alt="Arvind Pandey"
+                height={280}
+                width={280}
+                className="rounded-full object-cover shadow-xl"
                 priority
               />
             </div>
@@ -161,8 +161,8 @@ export default async function HomePage() {
 
           <div className="grid md:grid-cols-3 gap-8">
             {posts.map((post) => (
-              <Card 
-                key={post.id} 
+              <Card
+                key={post.id}
                 className="group hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 border-muted/50"
               >
                 <CardHeader className="space-y-3">
@@ -183,14 +183,14 @@ export default async function HomePage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="group/btn hover:gap-3 transition-all" 
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="group/btn hover:gap-3 transition-all"
                     asChild
                   >
                     <Link href={`/blog/${post.slug}`}>
-                      Read Article 
+                      Read Article
                       <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
                     </Link>
                   </Button>
@@ -218,20 +218,20 @@ export default async function HomePage() {
             Have a project in mind or want to discuss technology? Feel free to reach out through any of these channels.
           </p>
           <div className="flex justify-center gap-6 mb-8">
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="h-14 w-14 rounded-full hover:scale-110 transition-transform duration-200" 
+            <Button
+              variant="outline"
+              size="lg"
+              className="h-14 w-14 rounded-full hover:scale-110 transition-transform duration-200"
               asChild
             >
               <a href="mailto:arvindtech93@gmail.com" aria-label="Email">
                 <Mail className="h-6 w-6" />
               </a>
             </Button>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="h-14 w-14 rounded-full hover:scale-110 transition-transform duration-200" 
+            <Button
+              variant="outline"
+              size="lg"
+              className="h-14 w-14 rounded-full hover:scale-110 transition-transform duration-200"
               asChild
             >
               <a
@@ -240,13 +240,18 @@ export default async function HomePage() {
                 rel="noopener noreferrer"
                 aria-label="WhatsApp"
               >
-                <span className="font-bold text-base">WA</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24">
+                  <g fill="currentColor">
+                    <path fillRule="evenodd" d="M12 4a8 8 0 0 0-6.895 12.06l.569.718l-.697 2.359l2.32-.648l.379.243A8 8 0 1 0 12 4M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10s-4.477 10-10 10a9.96 9.96 0 0 1-5.016-1.347l-4.948 1.382l1.426-4.829l-.006-.007l-.033-.055A9.96 9.96 0 0 1 2 12" clipRule="evenodd"></path>
+                    <path d="M16.735 13.492c-.038-.018-1.497-.736-1.756-.83a1 1 0 0 0-.34-.075c-.196 0-.362.098-.49.291c-.146.217-.587.732-.723.886c-.018.02-.042.045-.057.045c-.013 0-.239-.093-.307-.123c-1.564-.68-2.751-2.313-2.914-2.589c-.023-.04-.024-.057-.024-.057c.005-.021.058-.074.085-.101c.08-.079.166-.182.249-.283l.117-.14c.121-.14.175-.25.237-.375l.033-.066a.68.68 0 0 0-.02-.64c-.034-.069-.65-1.555-.715-1.711c-.158-.377-.366-.552-.655-.552c-.027 0 0 0-.112.005c-.137.005-.883.104-1.213.311c-.35.22-.94.924-.94 2.16c0 1.112.705 2.162 1.008 2.561l.041.06c1.161 1.695 2.608 2.951 4.074 3.537c1.412.564 2.081.63 2.461.63c.16 0 .288-.013.4-.024l.072-.007c.488-.043 1.56-.599 1.804-1.276c.192-.534.243-1.117.115-1.329c-.088-.144-.239-.216-.43-.308"></path>
+                  </g>
+                </svg>
               </a>
             </Button>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="h-14 w-14 rounded-full hover:scale-110 transition-transform duration-200" 
+            <Button
+              variant="outline"
+              size="lg"
+              className="h-14 w-14 rounded-full hover:scale-110 transition-transform duration-200"
               asChild
             >
               <a
@@ -267,11 +272,11 @@ export default async function HomePage() {
         <div className="max-w-6xl mx-auto px-4 py-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <Image 
-                src="/img0.jpg" 
-                alt="Arvind Pandey" 
-                width={32} 
-                height={32} 
+              <Image
+                src="/img0.jpg"
+                alt="Arvind Pandey"
+                width={32}
+                height={32}
                 className="rounded-full object-cover"
               />
               <p className="text-sm text-muted-foreground">
@@ -279,8 +284,8 @@ export default async function HomePage() {
               </p>
             </div>
             <div className="flex items-center gap-6">
-              <a 
-                href="mailto:arvindtech93@gmail.com" 
+              <a
+                href="mailto:arvindtech93@gmail.com"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 arvindtech93@gmail.com
