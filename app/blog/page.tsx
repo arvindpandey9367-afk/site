@@ -189,22 +189,7 @@ export default async function BlogPage() {
         </div>
 
         {/* Newsletter CTA */}
-        <Card className="bg-gradient-to-r from-primary/10 to-purple-600/10 border-primary/20">
-          <CardContent className="py-12 text-center">
-            <h3 className="text-2xl font-bold mb-4">Stay Updated</h3>
-            <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-              Subscribe to get notified when new articles are published.
-            </p>
-            <div className="flex max-w-sm mx-auto gap-2">
-              <input
-                type="email"
-                placeholder="Your email address"
-                className="flex-1 px-4 py-2 rounded-lg border bg-background"
-              />
-              <Button>Subscribe</Button>
-            </div>
-          </CardContent>
-        </Card>
+
       </div>
     </div>
   )
