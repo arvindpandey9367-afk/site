@@ -60,14 +60,14 @@ export default async function HomePage() {
                 alt="Arvind Pandey"
                 height={280}
                 width={280}
-                className="rounded-full object-cover shadow-xl"
+                className="rounded-full object-cover shadow-xl w-48 h-48 md:w-[280px] md:h-[280px]"
                 priority
               />
             </div>
-            <h1 className="text-6xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
               Arvind Pandey
             </h1>
-            <p className="text-2xl md:text-3xl text-muted-foreground mb-4 font-light">
+            <p className="text-xl sm:text-2xl md:text-3xl text-muted-foreground mb-4 font-light">
               IT Lecturer & Tech Consultant
             </p>
             <p className="text-base text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
@@ -130,11 +130,11 @@ export default async function HomePage() {
                     <h4 className="font-semibold text-lg mb-1">Teaching</h4>
                     <p className="text-muted-foreground">Crimson College of Technology</p>
                   </div>
-                  </div>
                 </div>
               </div>
+            </div>
 
-            <div className="relative order-first md:order-last">
+            <div className="relative order-first md:order-last max-w-sm mx-auto md:max-w-none w-full">
               <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-shadow duration-300 border-4 border-muted/20">
                 <Image
                   src="/img3.jpeg"
@@ -189,11 +189,11 @@ export default async function HomePage() {
                     className="group/btn hover:gap-3 transition-all"
                     asChild
                   >
-                      <Link href={`/blog/${post.slug}`}>
-                      Read Article 
+                    <Link href={`/blog/${post.slug}`}>
+                      Read Article
                       <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                      </Link>
-                    </Button>
+                    </Link>
+                  </Button>
                 </CardContent>
               </Card>
             ))}
