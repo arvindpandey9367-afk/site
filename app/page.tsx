@@ -130,9 +130,9 @@ export default async function HomePage() {
                     <h4 className="font-semibold text-lg mb-1">Teaching</h4>
                     <p className="text-muted-foreground">Crimson College of Technology</p>
                   </div>
+                  </div>
                 </div>
               </div>
-            </div>
 
             <div className="relative order-first md:order-last">
               <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-shadow duration-300 border-4 border-muted/20">
@@ -189,11 +189,11 @@ export default async function HomePage() {
                     className="group/btn hover:gap-3 transition-all" 
                     asChild
                   >
-                    <Link href={`/blog/${post.slug}`}>
+                      <Link href={`/blog/${post.slug}`}>
                       Read Article 
                       <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                    </Link>
-                  </Button>
+                      </Link>
+                    </Button>
                 </CardContent>
               </Card>
             ))}

@@ -8,7 +8,7 @@ const transferCookies = (from: NextResponse, to: NextResponse) => {
 	})
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
 	const { supabase, response } = createClient(request)
 	const {
 		data: { session },
@@ -34,5 +34,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/login'],
+	matcher: ['/admin/:path*', '/login'],
 }
