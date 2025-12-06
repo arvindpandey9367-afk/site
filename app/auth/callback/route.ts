@@ -31,14 +31,19 @@ export async function POST(request: NextRequest) {
 		}
 	)
 
-	const { event, session } = await request.json()
+	try {
+		const { event, session } = await request.json()
 
-	if (['SIGNED_IN', 'TOKEN_REFRESHED', 'USER_UPDATED'].includes(event) && session) {
-		await supabase.auth.setSession(session)
-	}
+		if (['SIGNED_IN', 'TOKEN_REFRESHED', 'USER_UPDATED'].includes(event) && session) {
+			await supabase.auth.setSession(session)
+		}
 
-	if (event === 'SIGNED_OUT') {
-		await supabase.auth.signOut()
+		if (event === 'SIGNED_OUT') {
+			await supabase.auth.signOut()
+		}
+	} catch (error) {
+		console.error('Auth callback error:', error)
+		return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
 	}
 
 	return response
