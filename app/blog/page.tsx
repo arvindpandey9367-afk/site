@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { Calendar, ArrowLeft, Clock, User } from 'lucide-react'
 import { format } from 'date-fns'
 import { PostSummary } from '@/types/post'
@@ -45,19 +45,21 @@ const getPostDate = (post: PostSummary) =>
 export default async function BlogPage() {
   const posts = await getPosts()
   const getCardImage = (src?: string | null, alt?: string) => (
-    <div className="relative h-48 w-full overflow-hidden bg-gradient-to-br from-primary/10 to-purple-600/10 flex items-center justify-center">
-      {src ? (
-        <Image
-          src={src}
-          alt={alt || 'Blog featured image'}
-          fill
-          sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-cover"
-          unoptimized
-        />
-      ) : (
-        <div className="text-sm text-muted-foreground">No image provided</div>
-      )}
+    <div className=" w-full">
+      <div className="relative h-48 w-full overflow-hidden rounded-xl bg-gradient-to-br from-primary/10 to-purple-600/10 flex items-center justify-center">
+        {src ? (
+          <Image
+            src={src}
+            alt={alt || 'Blog featured image'}
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
+            className="object-cover transition-transform duration-500 hover:scale-105"
+            unoptimized
+          />
+        ) : (
+          <div className="text-sm text-muted-foreground">No image provided</div>
+        )}
+      </div>
     </div>
   )
 
@@ -96,39 +98,34 @@ export default async function BlogPage() {
         {posts.length > 0 && (
           <div className="mb-16">
             <h2 className="text-2xl font-bold mb-6 text-center">Featured</h2>
-            <Card className="overflow-hidden border-2 hover:border-primary/50 transition-all duration-300 hover:shadow-xl">
-              <div className="md:flex">
-                <div className="md:w-2/3 p-6 md:p-8">
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="h-4 w-4" />
-                      {format(new Date(getPostDate(posts[0])), 'MMMM d, yyyy')}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
-                      {getReadingTime(posts[0].excerpt)} min read
-                    </span>
-                  </div>
-                  <CardTitle className="text-2xl md:text-3xl mb-3">
-                    <Link
-                      href={`/blog/${posts[0].slug}`}
-                      className="hover:text-primary transition-colors"
-                    >
+            <Link href={`/blog/${posts[0].slug}`} className="block group">
+              <Card className="overflow-hidden justify-center border-2 hover:border-primary/50 transition-all duration-300 hover:shadow-xl">
+                <div className="md:flex">
+                  <div className="md:w-2/3 p-6 md:p-8">
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
+                      <span className="flex items-center gap-1">
+                        <Calendar className="h-4 w-4" />
+                        {format(new Date(getPostDate(posts[0])), 'MMMM d, yyyy')}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Clock className="h-4 w-4" />
+                        {getReadingTime(posts[0].excerpt)} min read
+                      </span>
+                    </div>
+                    <CardTitle className="text-2xl md:text-3xl mb-3 group-hover:text-primary transition-colors">
                       {posts[0].title}
-                    </Link>
-                  </CardTitle>
-                  <CardDescription className="text-lg mb-6">
-                    {posts[0].excerpt}
-                  </CardDescription>
-                  <Button asChild>
-                    <Link href={`/blog/${posts[0].slug}`}>
+                    </CardTitle>
+                    <CardDescription className="text-lg mb-6">
+                      {posts[0].excerpt}
+                    </CardDescription>
+                    <div className={buttonVariants()}>
                       Read Full Article
-                    </Link>
-                  </Button>
+                    </div>
+                  </div>
+                  <div className="justify-center pr-7 py-1 md:w-1/3">{getCardImage(posts[0].featured_image, posts[0].title)}</div>
                 </div>
-                <div className="md:w-1/3">{getCardImage(posts[0].featured_image, posts[0].title)}</div>
-              </div>
-            </Card>
+              </Card>
+            </Link>
           </div>
         )}
 
@@ -138,44 +135,41 @@ export default async function BlogPage() {
           {posts.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {posts.slice(1).map((post, index) => (
-                <Card
-                  key={post.id}
-                  className="group hover:shadow-xl transition-all duration-300 border hover:border-primary/30 overflow-hidden"
-                >
-                  <CardHeader>
-                    {getCardImage(post.featured_image, post.title)}
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-1 rounded">
-                        Article {index + 2}
-                      </span>
-                      <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <Clock className="h-3 w-3" />
-                        {getReadingTime(post.excerpt)} min
-                      </span>
-                    </div>
-                    <CardTitle className="text-xl group-hover:text-primary transition-colors">
-                      <Link href={`/blog/${post.slug}`}>
+                <Link key={post.id} href={`/blog/${post.slug}`} className="block group h-full">
+                  <Card
+                    className="h-full group-hover:shadow-xl transition-all duration-300 border hover:border-primary/30 overflow-hidden"
+                  >
+                    <CardHeader>
+                      {getCardImage(post.featured_image, post.title)}
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-1 rounded">
+                          Article {index + 2}
+                        </span>
+                        <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                          <Clock className="h-3 w-3" />
+                          {getReadingTime(post.excerpt)} min
+                        </span>
+                      </div>
+                      <CardTitle className="text-xl group-hover:text-primary transition-colors">
                         {post.title}
-                      </Link>
-                    </CardTitle>
-                    <CardDescription className="line-clamp-2">
-                      {post.excerpt}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-center justify-between">
-                      <span className="flex items-center gap-1 text-sm text-muted-foreground">
-                        <Calendar className="h-4 w-4" />
-                        {format(new Date(getPostDate(post)), 'MMM d, yyyy')}
-                      </span>
-                      <Button variant="ghost" size="sm" asChild className="group-hover:text-primary">
-                        <Link href={`/blog/${post.slug}`}>
+                      </CardTitle>
+                      <CardDescription className="line-clamp-2">
+                        {post.excerpt}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex items-center justify-between">
+                        <span className="flex items-center gap-1 text-sm text-muted-foreground">
+                          <Calendar className="h-4 w-4" />
+                          {format(new Date(getPostDate(post)), 'MMM d, yyyy')}
+                        </span>
+                        <div className={buttonVariants({ variant: "ghost", size: "sm", className: "group-hover:text-primary" })}>
                           Read →
-                        </Link>
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
               ))}
             </div>
           ) : (
