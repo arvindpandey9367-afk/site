@@ -51,16 +51,16 @@ export default async function HomePage() {
     <div className="min-h-screen bg-background text-foreground">
       <LandingNav />
       {/* Hero Section */}
-      <section id="home" className="pt-32 pb-16 px-4 min-h-[90vh] flex items-center">
+      <section id="home" className="pt-24 pb-12 px-4 min-h-screen flex items-center">
         <div className="max-w-6xl mx-auto w-full">
           <div className="text-center">
-            <div className="inline-block p-3 bg-primary/5 rounded-full mb-8 hover:scale-105 transition-transform duration-300">
+            <div className="inline-block p-3 bg-primary/5 rounded-full mb-6 hover:scale-105 transition-transform duration-300">
               <Image
                 src="/img0.jpg"
                 alt="Arvind Pandey"
                 height={280}
                 width={280}
-                className="rounded-full object-cover shadow-xl w-48 h-48 md:w-[280px] md:h-[280px]"
+                className="rounded-full object-cover shadow-xl w-48 h-64 md:w-[280px] md:h-[380px]"
                 priority
               />
             </div>
@@ -70,7 +70,7 @@ export default async function HomePage() {
             <p className="text-xl sm:text-2xl md:text-3xl text-muted-foreground mb-4 font-light">
               IT Lecturer & Tech Consultant
             </p>
-            <p className="text-base text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
               Passionate educator at Crimson College of Technology, empowering the next generation of tech innovators
             </p>
             <div className="flex justify-center gap-4">
