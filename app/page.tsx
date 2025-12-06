@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Mail, Linkedin, ArrowRight, Calendar, Clock, BookOpen, Briefcase, GraduationCap } from 'lucide-react'
 import { format } from 'date-fns'
@@ -51,10 +51,11 @@ export default async function HomePage() {
     <div className="min-h-screen bg-background text-foreground">
       <LandingNav />
       {/* Hero Section */}
-      <section id="home" className="pt-24 pb-12 px-4 min-h-screen flex items-center">
+      <section id="home" className="pt-27 pb-15
+       px-4 min-h-screen flex items-center">
         <div className="max-w-6xl mx-auto w-full">
           <div className="text-center">
-            <div className="inline-block p-3 bg-primary/5 rounded-full mb-6 hover:scale-105 transition-transform duration-300">
+            <div className="inline-block p-3 bg-primary/5 rounded-full mb-6 hover:scale-102 transition-transform duration-300">
               <Image
                 src="/img0.jpg"
                 alt="Arvind Pandey"
@@ -161,41 +162,47 @@ export default async function HomePage() {
 
           <div className="grid md:grid-cols-3 gap-8">
             {posts.map((post) => (
-              <Card
-                key={post.id}
-                className="group hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 border-muted/50"
-              >
-                <CardHeader className="space-y-3">
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <Calendar className="h-3.5 w-3.5" />
-                    <time>{format(new Date(getPostDate(post)), 'MMM d, yyyy')}</time>
-                    <span>•</span>
-                    <Clock className="h-3.5 w-3.5" />
-                    <span>{getReadingTime(post.excerpt)} min read</span>
-                  </div>
-                  <CardTitle className="text-xl group-hover:text-primary transition-colors line-clamp-2">
-                    <Link href={`/blog/${post.slug}`}>
+              <Link key={post.id} href={`/blog/${post.slug}`} className="block group h-full">
+                <Card
+                  className="h-full group-hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 border-muted/50 overflow-hidden flex flex-col"
+                >
+                  {post.featured_image && (
+                    <div className="px-4 pt-4">
+                      <div className="relative w-full h-48 overflow-hidden rounded-xl">
+                        <Image
+                          src={post.featured_image}
+                          alt={post.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
+                    </div>
+                  )}
+                  <CardHeader className="space-y-3">
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <Calendar className="h-3.5 w-3.5" />
+                      <time>{format(new Date(getPostDate(post)), 'MMM d, yyyy')}</time>
+                      <span>•</span>
+                      <Clock className="h-3.5 w-3.5" />
+                      <span>{getReadingTime(post.excerpt)} min read</span>
+                    </div>
+                    <CardTitle className="text-xl group-hover:text-primary transition-colors line-clamp-2">
                       {post.title}
-                    </Link>
-                  </CardTitle>
-                  <CardDescription className="line-clamp-3 leading-relaxed">
-                    {post.excerpt}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="group/btn hover:gap-3 transition-all"
-                    asChild
-                  >
-                    <Link href={`/blog/${post.slug}`}>
+                    </CardTitle>
+                    <CardDescription className="line-clamp-3 leading-relaxed">
+                      {post.excerpt}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="mt-auto">
+                    <div
+                      className={buttonVariants({ variant: "ghost", size: "sm", className: "group/btn hover:gap-3 transition-all pl-0 hover:pl-0" })}
+                    >
                       Read Article
                       <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
 
