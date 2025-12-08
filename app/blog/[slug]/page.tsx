@@ -149,33 +149,26 @@ export default async function BlogPostPage({ params }: PageProps) {
             </div>
           </div>
 
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2 mb-8">
-            <span className="flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">
-              <Tag className="h-3 w-3" />
-              Web Development
-            </span>
-            <span className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">
-              Next.js
-            </span>
-            <span className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">
-              TypeScript
-            </span>
-            <span className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">
-              Tutorial
-            </span>
-          </div>
+         
 
           <div className="relative h-64 md:h-80 rounded-xl overflow-hidden mb-8 bg-linear-to-r from-primary/20 to-purple-600/20">
             {post.featured_image ? (
-              <Image
-                src={post.featured_image}
-                alt={post.title}
-                fill
-                sizes="(max-width: 768px) 100vw, 700px"
-                className="object-cover"
-                unoptimized
-              />
+              <a
+                href={post.featured_image}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block h-full"
+                aria-label="View full-size image"
+              >
+                <Image
+                  src={post.featured_image}
+                  alt={post.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 700px"
+                  className="object-cover"
+                  unoptimized
+                />
+              </a>
             ) : (
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center">
