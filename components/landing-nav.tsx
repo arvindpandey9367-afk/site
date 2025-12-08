@@ -109,13 +109,13 @@ export function LandingNav() {
             alt="Profile avatar"
             width={40}
             height={40}
-            className="h-10 w-10 rounded-full border border-white/40 object-cover shadow-inner shadow-black/30"
+            className="h-11 w-11 rounded-full border border-white/40 object-cover shadow-inner shadow-black/30"
           />
         </div>
 
         <div
           ref={navRef}
-          className="relative hidden flex-1 items-center justify-evenly text-sm md:flex"
+          className="relative hidden flex-1 items-center justify-evenly text-xl md:flex"
           onMouseLeave={() => setHoverIndex(null)}
           role="navigation"
           aria-label="Primary"

@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { ShareButtons } from '@/components/share-buttons'
 import Image from 'next/image'
-import { MarkdownRenderer } from '@/components/markdown-renderer'
 import { Post } from '@/types/post'
 import { createPublicClient } from '@/lib/supabase/server'
 
@@ -188,10 +187,10 @@ export default async function BlogPostPage({ params }: PageProps) {
           </div>
         </header>
 
-        {/* Article Content with Markdown */}
+        {/* Article Content */}
         <article className="mb-16">
-          <div className="prose prose-lg dark:prose-invert max-w-none">
-            <MarkdownRenderer content={post.content} />
+          <div className="prose prose-lg dark:prose-invert max-w-none whitespace-pre-wrap">
+            {post.content}
           </div>
         </article>
 
