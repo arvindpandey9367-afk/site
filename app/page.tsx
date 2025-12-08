@@ -10,6 +10,11 @@ import { LandingNav } from '@/components/landing-nav'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
+export const metadata = {
+  title: 'Arvind Pandey | IT Lecturer & Tech Consultant',
+  description:
+    'Explore the portfolio and articles of Arvind Pandey—IT lecturer and tech consultant sharing tutorials, guides, and tech insights.',
+}
 
 // Server component to fetch posts
 async function getPosts(): Promise<PostSummary[]> {

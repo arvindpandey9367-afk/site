@@ -8,9 +8,50 @@ import { ShareButtons } from '@/components/share-buttons'
 import Image from 'next/image'
 import { Post } from '@/types/post'
 import { createPublicClient } from '@/lib/supabase/server'
+import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
+
+// SEO metadata for each post
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { slug } = await params
+  const post = await getPostBySlug(slug)
+
+  if (!post) {
+    return {
+      title: 'Post not found | Arvind Pandey',
+      description: 'The requested article could not be found.',
+    }
+  }
+
+  const title = `${post.title} | Arvind Pandey`
+  const description = post.excerpt || post.title
+  const url = `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://arvindpandey.vercel.app'}/blog/${slug}`
+  const image = post.featured_image
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: 'article',
+      siteName: 'Arvind Pandey',
+      images: image ? [{ url: image, alt: post.title }] : undefined,
+    },
+    twitter: {
+      card: image ? 'summary_large_image' : 'summary',
+      title,
+      description,
+      images: image ? [image] : undefined,
+    },
+  }
+}
 
 // Server component to fetch post by slug
 export async function getPostBySlug(slug: string): Promise<Post | null> {
@@ -98,13 +139,20 @@ export default async function BlogPostPage({ params }: PageProps) {
     <div className="min-h-screen bg-linear-to-b from-background to-muted/10">
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Navigation */}
-        <div className="mb-8">
+        <div className="mb-8 flex items-center gap-3">
           <Button variant="ghost" asChild>
             <Link href="/blog">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Blog
             </Link>
           </Button>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <span
+              className="h-4 w-4 rounded-full border-2 border-muted-foreground/40 border-t-primary animate-spin"
+              aria-hidden="true"
+            />
+            <span>Loading…</span>
+          </div>
         </div>
 
         {/* Article Header */}
