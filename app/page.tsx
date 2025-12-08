@@ -22,7 +22,7 @@ async function getPosts(): Promise<PostSummary[]> {
     const supabase = createPublicClient()
     const { data, error } = await supabase
       .from('posts')
-      .select('id, title, slug, excerpt, featured_image, published_at, created_at')
+      .select('id, title, slug, excerpt, content, featured_image, published_at, created_at')
       .eq('published', true)
       .order('published_at', { ascending: false })
       .order('created_at', { ascending: false })
@@ -189,7 +189,7 @@ export default async function HomePage() {
                       <time>{format(new Date(getPostDate(post)), 'MMM d, yyyy')}</time>
                       <span>•</span>
                       <Clock className="h-3.5 w-3.5" />
-                      <span>{getReadingTime(post.excerpt)} min read</span>
+                      <span>{getReadingTime(post.content ?? post.excerpt)} min read</span>
                     </div>
                     <CardTitle className="text-xl group-hover:text-primary transition-colors line-clamp-2">
                       {post.title}

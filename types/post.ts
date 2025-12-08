@@ -16,6 +16,7 @@ export interface PostSummary {
   title: string
   slug: string
   excerpt: string
+  content?: string
   featured_image?: string | null
   published_at: string | null
   created_at?: string | null
