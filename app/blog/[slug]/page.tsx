@@ -139,20 +139,13 @@ export default async function BlogPostPage({ params }: PageProps) {
     <div className="min-h-screen bg-linear-to-b from-background to-muted/10">
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Navigation */}
-        <div className="mb-8 flex items-center gap-3">
+        <div className="mb-8">
           <Button variant="ghost" asChild>
             <Link href="/blog">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Blog
             </Link>
           </Button>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <span
-              className="h-4 w-4 rounded-full border-2 border-muted-foreground/40 border-t-primary animate-spin"
-              aria-hidden="true"
-            />
-            <span>Loading…</span>
-          </div>
         </div>
 
         {/* Article Header */}
