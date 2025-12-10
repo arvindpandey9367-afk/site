@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { Menu, X } from 'lucide-react'
 import { useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react'
+import { ModeToggle } from '@/components/toggle-theme'
 
 interface NavItem {
   name: string
@@ -151,6 +152,7 @@ export function LandingNav() {
             )
           })}
         </div>
+        <ModeToggle />
 
         <button
           className="rounded-full border border-white/20 p-2 text-white transition hover:bg-white/10 md:hidden "
