@@ -103,7 +103,7 @@ export function LandingNav() {
 
   return (
     <nav className="fixed top-4 left-1/2 z-50 w-[85%] max-w-3xl -translate-x-1/2">
-      <div className="relative flex items-center rounded-full border border-white/15 bg-[rgba(184,184,184,0.78)] px-8 py-3 text-white shadow-[0_30px_60px_rgba(15,15,15,0.35)] backdrop-blur-2xl justify-between">
+      <div className="relative flex items-center justify-between rounded-full border border-white/15 bg-[rgba(184,184,184,0.78)] px-4 py-3 text-white shadow-[0_30px_60px_rgba(15,15,15,0.35)] backdrop-blur-2xl">
         <div className="flex items-center">
           <Image
             src="/img0.jpg"
@@ -151,12 +151,12 @@ export function LandingNav() {
               </a>
             )
           })}
-          <div className="ml-4 hidden md:block">
+          <div className="ml-2 hidden md:block">
             <ModeToggle />
           </div>
         </div>
 
-        <div className="flex items-center gap-2 md:hidden">
+        <div className="flex items-center gap-1 pr-0 md:hidden">
           <ModeToggle />
           <button
             className="rounded-full border border-white/20 p-2 text-white transition hover:bg-white/10"
