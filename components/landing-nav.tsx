@@ -151,16 +151,21 @@ export function LandingNav() {
               </a>
             )
           })}
+          <div className="ml-4 hidden md:block">
+            <ModeToggle />
+          </div>
         </div>
-        <ModeToggle />
 
-        <button
-          className="rounded-full border border-white/20 p-2 text-white transition hover:bg-white/10 md:hidden "
-          onClick={() => setIsMobileMenuOpen((prev) => !prev)}
-          aria-label="Toggle navigation menu"
-        >
-          {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <ModeToggle />
+          <button
+            className="rounded-full border border-white/20 p-2 text-white transition hover:bg-white/10"
+            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+            aria-label="Toggle navigation menu"
+          >
+            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
       </div>
 
       <div
