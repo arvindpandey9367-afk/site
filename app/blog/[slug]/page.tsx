@@ -201,14 +201,14 @@ export default async function BlogPostPage({ params }: PageProps) {
                 className="block h-full"
                 aria-label="View full-size image"
               >
-                <Image
-                  src={post.featured_image}
-                  alt={post.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 700px"
-                  className="object-cover"
-                  unoptimized
-                />
+              <Image
+                src={post.featured_image}
+                alt={post.title}
+                fill
+                sizes="(max-width: 768px) 100vw, 700px"
+                className="object-cover"
+                unoptimized
+              />
               </a>
             ) : (
               <div className="absolute inset-0 flex items-center justify-center">
