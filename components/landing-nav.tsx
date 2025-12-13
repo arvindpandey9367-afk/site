@@ -103,7 +103,7 @@ export function LandingNav() {
 
   return (
     <nav className="fixed top-4 left-1/2 z-50 w-[85%] max-w-3xl -translate-x-1/2">
-      <div className="relative flex items-center justify-between rounded-full border border-white/15 bg-[rgba(184,184,184,0.78)] px-4 py-3 text-white shadow-[0_30px_60px_rgba(15,15,15,0.35)] backdrop-blur-2xl">
+      <div className="relative flex items-center justify-between rounded-full border border-white/15 dark:border-white/10 bg-[rgba(184,184,184,0.78)] dark:bg-[rgba(30,30,30,0.85)] px-4 py-3 text-white shadow-[0_30px_60px_rgba(15,15,15,0.35)] backdrop-blur-2xl">
         <div className="flex items-center">
           <Image
             src="/img0.jpg"
@@ -123,7 +123,7 @@ export function LandingNav() {
         >
           {highlight && (
             <span
-              className="pointer-events-none absolute top-1/2 -translate-y-1/2 rounded-full bg-white/15 transition-all duration-300"
+              className="pointer-events-none absolute top-1/2 -translate-y-1/2 rounded-full bg-white/15 dark:bg-white/10 transition-all duration-300"
               style={{
                 left: highlight.left - 10,
                 width: highlight.width + 20,
@@ -151,12 +151,9 @@ export function LandingNav() {
               </a>
             )
           })}
-          <div className="ml-2 hidden md:block">
-            <ModeToggle />
-          </div>
         </div>
 
-        <div className="flex items-center gap-1 pr-0 md:hidden">
+        <div className="flex items-center gap-1 md:hidden">
           <ModeToggle />
           <button
             className="rounded-full border border-white/20 p-2 text-white transition hover:bg-white/10"
@@ -165,6 +162,10 @@ export function LandingNav() {
           >
             {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
+        </div>
+
+        <div className="hidden md:block">
+          <ModeToggle />
         </div>
       </div>
 
