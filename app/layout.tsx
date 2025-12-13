@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { AuthProvider } from '@/contexts/AuthContext'
-import { ThemeProvider } from '@/components/theme-provider'
 
 const siteName = 'Arvind Pandey | Portfolio & Blog'
 const siteDescription =
@@ -50,17 +49,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body className="font-sans antialiased">
         <AuthProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+          {children}
         </AuthProvider>
       </body>
     </html>
